@@ -1,0 +1,6 @@
+@AppWeb.HormonalCare.API_HostAddress = http://localhost:5183
+
+GET {{AppWeb.HormonalCare.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
