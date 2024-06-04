@@ -1,3 +1,8 @@
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
+using AppWeb.HormonalCare.API.MedicalRecord.Infrastructure.Persistence.EFC.Repositories;
 using AppWeb.HormonalCare.API.Profiles.Application.Internal.CommandServices;
 using AppWeb.HormonalCare.API.Profiles.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Repositories;
@@ -87,6 +92,11 @@ builder.Services.AddScoped<ITutorialQueryService, TutorialQueryService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
+
+// ReasonOfConsultation Bounded Context Injection Configuration
+builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
+builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
+builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultationQueryService>();
 
 var app = builder.Build();
 
