@@ -7,7 +7,14 @@ public static class CreateProfileCommandFromResourceAssembler
 {
     public static CreateProfileCommand ToCommandFromResource(CreateProfileResource resource)
     {
-        return new CreateProfileCommand(resource.FirstName, resource.LastName, resource.Email, resource.Street,
-            resource.Number, resource.City, resource.PostalCode, resource.Country);
+        return new CreateProfileCommand(
+            resource.FirstName,
+            resource.LastName,
+            resource.Image,
+            resource.Gender,
+            resource.BirthDate,
+            resource.Phone,
+            resource.Email
+        );
     }
 }

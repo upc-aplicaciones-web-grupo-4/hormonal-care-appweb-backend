@@ -93,6 +93,21 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
 
+
+// TypeExam Bounded Context Injection Configuration
+builder.Services.AddScoped<ITypeExamRepository, TypeExamRepository>();
+builder.Services.AddScoped<ITypeExamCommandService, TypeExamCommandService>();
+builder.Services.AddScoped<ITypeExamQueryService, TypeExamQueryService>();
+
+// MedicalExam Bounded Context Injection Configuration
+builder.Services.AddScoped<IMedicalExamRepository, MedicalExamRepository>();
+builder.Services.AddScoped<IMedicalExamCommandService, MedicalExamCommandService>();
+builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
+
+
+
+
+
 // ReasonOfConsultation Bounded Context Injection Configuration
 builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
