@@ -98,6 +98,11 @@ builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultation
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
 builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultationQueryService>();
 
+// MedicalRecord Bounded Context Injection Configuration
+builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandService>();
+builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
+
 var app = builder.Build();
 
 // Verify Database Objects are created
