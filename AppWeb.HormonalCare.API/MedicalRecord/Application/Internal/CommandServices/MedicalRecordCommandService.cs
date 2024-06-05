@@ -10,18 +10,22 @@ public class MedicalRecordCommandService (IMedicalRecordRepository medicalRecord
 {
     public async Task<Domain.Model.Aggregates.MedicalRecord?> Handle(CreateMedicalRecordCommand command)
     {
-            try
-            {
-                var reasonOfConsultation = new ReasonOfConsultation();
-                await reasonOfConsultationRepository.AddAsync(reasonOfConsultation);
-                var medicalRecord = new Domain.Model.Aggregates.MedicalRecord(reasonOfConsultation);
-                await medicalRecordRepository.AddAsync(medicalRecord);
-                await unitOfWork.CompleteAsync();
-                return medicalRecord;
-            } catch (Exception e)
-            {
-                Console.WriteLine($"An error occurred while creating the medical record: {e.Message}");
-                return null;
-            }
+        try
+        {
+            var reasonOfConsultation = new ReasonOfConsultation();
+            await reasonOfConsultationRepository.AddAsync(reasonOfConsultation);
+            await unitOfWork.CompleteAsync(); 
+
+            var medicalRecord = new Domain.Model.Aggregates.MedicalRecord(reasonOfConsultation);
+            await medicalRecordRepository.AddAsync(medicalRecord);
+            await unitOfWork.CompleteAsync(); 
+
+            return medicalRecord;
+        } 
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred while creating the medical record: {e.Message}");
+            return null;
+        }
     }
 }

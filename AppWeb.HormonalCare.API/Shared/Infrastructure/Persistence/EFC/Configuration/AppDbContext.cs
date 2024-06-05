@@ -130,10 +130,6 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasForeignKey(t => t.TypeExamId)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
-
-
-        
-        
         
         
         // ReasonOfConsultation Context
@@ -142,6 +138,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<ReasonOfConsultation>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<ReasonOfConsultation>().Property(r => r.Description).IsRequired().HasMaxLength(500);
         builder.Entity<ReasonOfConsultation>().Property(r => r.Symptoms).IsRequired().HasMaxLength(500);
+        
+        //MedicalRecord Context
+        
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().HasKey(m => m.Id);
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.ReasonOfConsultationId).IsRequired();
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();

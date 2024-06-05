@@ -6,20 +6,20 @@ public partial class MedicalRecord
 {
     public int Id { get; set; }
     
-    public ReasonOfConsultation ReasonOfConsultation { get; set; }
+    //public ReasonOfConsultation ReasonOfConsultation { get; set; }
 
-        
-    [ForeignKey("ReasonOfConsultationId")]
-    public int ReasonOfConsultationId { get; private set; }
+    public int ReasonOfConsultationId { get; set; }
+    
+    
     
     public MedicalRecord()
     {
-        this.ReasonOfConsultation = new ReasonOfConsultation();
+        //this.ReasonOfConsultation = new ReasonOfConsultation();
     }
 
     public MedicalRecord(ReasonOfConsultation reasonOfConsultation)
     {
-        this.ReasonOfConsultation = reasonOfConsultation;
+        //this.ReasonOfConsultation = reasonOfConsultation;
         ReasonOfConsultationId = reasonOfConsultation.Id;
     }
 }
