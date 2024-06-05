@@ -99,6 +99,43 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 e.Property(p => p.Address).HasColumnName("EmailAddress");
             });
 
+        // TypeExam Context
+
+        builder.Entity<TypeExam>().HasKey(t => t.Id);
+        builder.Entity<TypeExam>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<TypeExam>().OwnsOne(t => t.Name,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.TypeName).HasColumnName("TypeExamName");
+            });
+
+        // MedicalExam Context
+
+        builder.Entity<MedicalExam>().HasKey(t => t.Id);
+        builder.Entity<MedicalExam>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalExam>().OwnsOne(t => t.Name,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.ExamName).HasColumnName("MedicalExamName");
+            });
+
+        // MedicalExam Relationships
+        
+        
+        builder.Entity<TypeExam>()
+            .HasMany(m => m.MedicalExams)
+            .WithOne(t => t.TypeExam)
+            .HasForeignKey(t => t.TypeExamId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        
+        
+        
+        
         // ReasonOfConsultation Context
 
         builder.Entity<ReasonOfConsultation>().HasKey(r => r.Id);
