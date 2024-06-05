@@ -29,9 +29,22 @@ public class ProfilesContextFacade(IProfileCommandService profileCommandService,
      * <returns>The profile id</returns>
      * 
      */
-    public async Task<int> CreateProfile(string firstName, string lastName, string email, string street, string number, string city, string postalCode, string country)
+    public async Task<int> CreateProfile(
+        string firstName, 
+        string lastName, 
+        string image, 
+        string gender, 
+        DateTime birthDate, 
+        string phone, 
+        string email)
     {
-        var createProfileCommand = new CreateProfileCommand(firstName, lastName, email, street, number, city, postalCode, country);
+        var createProfileCommand = new CreateProfileCommand(firstName, 
+            lastName, 
+            image, 
+            gender, 
+            birthDate, 
+            phone, 
+            email);
         var profile = await profileCommandService.Handle(createProfileCommand);
         return profile?.Id ?? 0;
     }

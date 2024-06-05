@@ -68,23 +68,35 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 n.Property(p => p.FirstName).HasColumnName("FirstName");
                 n.Property(p => p.LastName).HasColumnName("LastName");
             });
-
+        builder.Entity<Profile>().OwnsOne(p => p.Image,
+            image =>
+            {
+                image.WithOwner().HasForeignKey("Id");
+                image.Property(p => p.Url).HasColumnName("Image");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.Gender,
+            gender =>
+            {
+                gender.WithOwner().HasForeignKey("Id");
+                gender.Property(p => p.Value).HasColumnName("Gender");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.BirthDate,
+            birthDate =>
+            {
+                birthDate.WithOwner().HasForeignKey("Id");
+                birthDate.Property(p => p.Value).HasColumnName("BirthDate");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.Phone,
+            phone =>
+            {
+                phone.WithOwner().HasForeignKey("Id");
+                phone.Property(p => p.Number).HasColumnName("PhoneNumber");
+            });
         builder.Entity<Profile>().OwnsOne(p => p.Email,
             e =>
             {
                 e.WithOwner().HasForeignKey("Id");
-                e.Property(a => a.Address).HasColumnName("EmailAddress");
-            });
-
-        builder.Entity<Profile>().OwnsOne(p => p.Address,
-            a =>
-            {
-                a.WithOwner().HasForeignKey("Id");
-                a.Property(s => s.Street).HasColumnName("AddressStreet");
-                a.Property(s => s.Number).HasColumnName("AddressNumber");
-                a.Property(s => s.City).HasColumnName("AddressCity");
-                a.Property(s => s.PostalCode).HasColumnName("AddressPostalCode");
-                a.Property(s => s.Country).HasColumnName("AddressCountry");
+                e.Property(p => p.Address).HasColumnName("EmailAddress");
             });
 
         // ReasonOfConsultation Context
