@@ -87,43 +87,25 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 a.Property(s => s.Country).HasColumnName("AddressCountry");
             });
 
-        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
-            .HasKey(m => m.Id);
-
-        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
-            .Property(m => m.Id)
-            .IsRequired()
-            .ValueGeneratedOnAdd();
-
+        // MedicalRecord Context
+        
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().HasKey(m => m.Id);
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
             .HasOne(m => m.ReasonOfConsultation)
-            .WithOne(r => r.MedicalRecord)
-            .HasForeignKey<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>(m => m.ReasonOfConsultationId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithOne()
+            .HasForeignKey<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>(m => m.ReasonOfConsultationId);
 
-        builder.Entity<ReasonOfConsultation>()
-            .HasKey(r => r.Id);
 
-        builder.Entity<ReasonOfConsultation>()
-            .Property(r => r.Id)
-            .IsRequired()
-            .ValueGeneratedOnAdd();
+        
+        // ReasonOfConsultation Context
 
-        builder.Entity<ReasonOfConsultation>()
-            .Property(r => r.Description)
-            .IsRequired()
-            .HasMaxLength(500);
-
-        builder.Entity<ReasonOfConsultation>()
-            .Property(r => r.Symptoms)
-            .IsRequired()
-            .HasMaxLength(500);
-
-        builder.Entity<ReasonOfConsultation>()
-            .HasOne(r => r.MedicalRecord)
-            .WithOne(m => m.ReasonOfConsultation)
-            .HasForeignKey<ReasonOfConsultation>(r => r.Id);
-
+        builder.Entity<ReasonOfConsultation>().HasKey(r => r.Id);
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Description).IsRequired().HasMaxLength(500);
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Symptoms).IsRequired().HasMaxLength(500);
+        
+        
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
