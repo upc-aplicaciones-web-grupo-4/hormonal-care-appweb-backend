@@ -22,11 +22,7 @@ public class ReasonOfConsultationCommandService(IReasonOfConsultationRepository 
             return null;
         }
     }
-
     
-    //Caution with this method
-    //Caution with this method
-    //Caution with this method
     //Caution with this method
     public async Task<ReasonOfConsultation?> Handle(UpdateReasonOfConsultationCommand command)
     {
