@@ -25,7 +25,7 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServ
         public async Task<Medication?> Handle(CreateMedicationCommand command)
         {
             var prescription = await _prescriptionRepository.FindByIdAsync(command.prescriptionId);
-            var medicationType = await _medicationTypeRepository.FindByIdAsync(command.medicalTypeId);
+            var medicationType = await _medicationTypeRepository.FindByIdAsync(command.medicationTypeId);
 
             if (prescription == null || medicationType == null)
             {

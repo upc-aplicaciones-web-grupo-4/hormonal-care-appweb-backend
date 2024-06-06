@@ -9,5 +9,6 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Services
         Task<Medication?> Handle(GetMedicationByIdQuery query);
         Task<Medication?> Handle(GetMedicationsByMedicationTypeIdQuery query);
         Task<Medication?> Handle(GetMedicationsByPrescriptionIdQuery query);
+        Task<IEnumerable<Medication>> Handle(GetAllMedicationsQuery query);
     }
 }

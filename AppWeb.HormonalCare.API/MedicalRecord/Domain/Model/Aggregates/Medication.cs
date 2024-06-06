@@ -40,6 +40,7 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates
 
     public Medication(CreateMedicationCommand command, Prescription prescriptionId, MedicationType medicationTypeId)
     {
+        //Name = new MedicalExamName(command.Name);
         DrugName = command.drugName;
         Quantity = command.quantity;
         Concentration = command.concentration;
@@ -49,16 +50,18 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates
         MedicationType = medicationTypeId;
     }
 
-    public Medication(Prescription prescriptionId, MedicationType medicationTypeId, string drugName, int quantity, string concentration, int frequency, string duration)
+    public Medication(int prescriptionId, int medicationTypeId, string drugName, int quantity, string concentration, int frequency, string duration)
     {
-        Prescription = prescriptionId;
-        MedicationType = medicationTypeId;
+       // Name = new MedicalExamName(name);
+        PrescriptionId = prescriptionId;
+        MedicationTypeId = medicationTypeId;
         DrugName = drugName;
         Quantity = quantity;
         Concentration = concentration;
         Frequency = frequency;
         Duration = duration;
     }
+    
 
 
     public void Update(UpdateMedicationCommand command, Prescription prescription, MedicationType medicationType)
