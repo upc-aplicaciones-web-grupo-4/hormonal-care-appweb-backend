@@ -81,5 +81,6 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates
     {
         MedicationType = medicationType;
     }
+    public int Id { get; }
 }
 }

@@ -33,5 +33,6 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities
         {
             throw new NotImplementedException();
         }
+        
     }
 }
