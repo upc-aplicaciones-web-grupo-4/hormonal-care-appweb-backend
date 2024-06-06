@@ -10,10 +10,6 @@ public class ReasonOfConsultationQueryService (IReasonOfConsultationRepository r
     public async Task<ReasonOfConsultation?> Handle(GetReasonOfConsultationByIdQuery query)
     {
         //Caution with this 
-        //Caution with this 
-        //Caution with this 
-        //Caution with this 
-
         return await reasonOfConsultationRepository.FindByIdAsync(query.Id);
     }
 }
