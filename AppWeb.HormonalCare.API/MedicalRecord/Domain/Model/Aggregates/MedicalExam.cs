@@ -8,13 +8,19 @@ public partial class MedicalExam
     public MedicalExam()
     {
         Name = new MedicalExamName();
+        TypeExamId = 0;
     }
-    public MedicalExam(string name, int typeExamId)
+    public MedicalExam(string name, int typeExamId): this()
     {
         Name = new MedicalExamName(name);
         TypeExamId = typeExamId;
     }
     public MedicalExam(CreateMedicalExamCommand command, TypeExam typeExam)
+    {
+        Name = new MedicalExamName(command.Name);
+        TypeExam = typeExam;
+    }
+    public void Update(UpdateMedicalExamCommand command, TypeExam typeExam)
     {
         Name = new MedicalExamName(command.Name);
         TypeExam = typeExam;

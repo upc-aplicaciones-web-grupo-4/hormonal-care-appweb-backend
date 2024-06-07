@@ -20,4 +20,12 @@ public class MedicalExamsContextFacade(IMedicalExamCommandService medicalexamCom
         var medicalExam = await medicalExamQueryService.Handle(getMedicalExamByNameQuery);
         return medicalExam?.Id ?? 0;
     }
+public async Task<int> UpdateMedicalExam(int id, string name, int typeExamId)
+    {
+        var updateMedicalExamCommand = new UpdateMedicalExamCommand(id, name, typeExamId);
+        var medicalExam = await medicalexamCommandService.Handle(updateMedicalExamCommand);
+        return medicalExam?.Id ?? 0;
+        
+    }
+    
 }

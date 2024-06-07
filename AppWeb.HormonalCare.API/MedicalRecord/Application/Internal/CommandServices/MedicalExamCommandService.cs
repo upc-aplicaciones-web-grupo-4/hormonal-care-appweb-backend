@@ -30,4 +30,29 @@ public class MedicalExamCommandService(IMedicalExamRepository medicalExamReposit
             return null;
         }
     }
+    
+    public async Task<MedicalExam?> Handle(UpdateMedicalExamCommand command)
+    {
+        var medicalExam = await medicalExamRepository.FindByIdAsync(command.Id);
+        if (medicalExam == null)
+        {
+            throw new Exception("MedicalExam not found");
+        }
+        var typeExam = await typeExamRepository.FindByIdAsync(command.TypeExamId);
+        if (typeExam == null)
+        {
+            throw new Exception("TypeExam not found");
+        }
+        medicalExam.Update(command, typeExam);
+        try
+        {
+            await unitOfWork.CompleteAsync();
+            return medicalExam;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"An error occurred while updating the MedicalExam: {e.Message}");
+            return null;
+        }
+    }
 }
