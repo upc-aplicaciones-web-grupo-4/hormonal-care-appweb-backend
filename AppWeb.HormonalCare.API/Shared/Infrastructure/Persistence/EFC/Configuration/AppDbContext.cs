@@ -2,6 +2,7 @@ using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,7 @@ namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configur
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    public DbSet<ExternalReport> ExternalReports { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
