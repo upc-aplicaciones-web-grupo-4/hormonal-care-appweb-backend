@@ -116,6 +116,11 @@ builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultation
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
 builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultationQueryService>();
 
+// Treatment Bounded Context Injection Configuration
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();
+builder.Services.AddScoped<ITreatmentQueryService, TreatmentQueryService>();
+
 var app = builder.Build();
 
 // Verify Database Objects are created
