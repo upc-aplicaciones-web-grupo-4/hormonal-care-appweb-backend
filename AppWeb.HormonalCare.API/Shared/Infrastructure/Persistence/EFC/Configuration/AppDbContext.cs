@@ -147,5 +147,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
+        
+        
+        // Treatment Context
+        
+        builder.Entity<Treatment>().HasKey(t => t.Id);
+        builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
     }
 }
