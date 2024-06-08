@@ -1,3 +1,4 @@
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Entities;
@@ -69,25 +70,80 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 n.Property(p => p.FirstName).HasColumnName("FirstName");
                 n.Property(p => p.LastName).HasColumnName("LastName");
             });
-
+        builder.Entity<Profile>().OwnsOne(p => p.Image,
+            image =>
+            {
+                image.WithOwner().HasForeignKey("Id");
+                image.Property(p => p.Url).HasColumnName("Image");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.Gender,
+            gender =>
+            {
+                gender.WithOwner().HasForeignKey("Id");
+                gender.Property(p => p.Value).HasColumnName("Gender");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.BirthDate,
+            birthDate =>
+            {
+                birthDate.WithOwner().HasForeignKey("Id");
+                birthDate.Property(p => p.Value).HasColumnName("BirthDate");
+            });
+        builder.Entity<Profile>().OwnsOne(p => p.Phone,
+            phone =>
+            {
+                phone.WithOwner().HasForeignKey("Id");
+                phone.Property(p => p.Number).HasColumnName("PhoneNumber");
+            });
         builder.Entity<Profile>().OwnsOne(p => p.Email,
             e =>
             {
                 e.WithOwner().HasForeignKey("Id");
-                e.Property(a => a.Address).HasColumnName("EmailAddress");
+                e.Property(p => p.Address).HasColumnName("EmailAddress");
             });
 
-        builder.Entity<Profile>().OwnsOne(p => p.Address,
-            a =>
+        // TypeExam Context
+
+        builder.Entity<TypeExam>().HasKey(t => t.Id);
+        builder.Entity<TypeExam>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<TypeExam>().OwnsOne(t => t.Name,
+            name =>
             {
-                a.WithOwner().HasForeignKey("Id");
-                a.Property(s => s.Street).HasColumnName("AddressStreet");
-                a.Property(s => s.Number).HasColumnName("AddressNumber");
-                a.Property(s => s.City).HasColumnName("AddressCity");
-                a.Property(s => s.PostalCode).HasColumnName("AddressPostalCode");
-                a.Property(s => s.Country).HasColumnName("AddressCountry");
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.TypeName).HasColumnName("TypeExamName");
             });
 
+        // MedicalExam Context
+
+        builder.Entity<MedicalExam>().HasKey(t => t.Id);
+        builder.Entity<MedicalExam>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalExam>().OwnsOne(t => t.Name,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.ExamName).HasColumnName("MedicalExamName");
+            });
+
+        // MedicalExam Relationships
+        
+        
+        builder.Entity<TypeExam>()
+            .HasMany(m => m.MedicalExams)
+            .WithOne(t => t.TypeExam)
+            .HasForeignKey(t => t.TypeExamId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+        
+        
+        
+        
+        // ReasonOfConsultation Context
+
+        builder.Entity<ReasonOfConsultation>().HasKey(r => r.Id);
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Description).IsRequired().HasMaxLength(500);
+        builder.Entity<ReasonOfConsultation>().Property(r => r.Symptoms).IsRequired().HasMaxLength(500);
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();

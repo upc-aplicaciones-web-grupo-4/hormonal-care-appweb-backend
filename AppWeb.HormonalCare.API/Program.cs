@@ -1,3 +1,8 @@
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
+using AppWeb.HormonalCare.API.MedicalRecord.Infrastructure.Persistence.EFC.Repositories;
 using AppWeb.HormonalCare.API.Profiles.Application.Internal.CommandServices;
 using AppWeb.HormonalCare.API.Profiles.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Repositories;
@@ -87,6 +92,26 @@ builder.Services.AddScoped<ITutorialQueryService, TutorialQueryService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
+
+
+// TypeExam Bounded Context Injection Configuration
+builder.Services.AddScoped<ITypeExamRepository, TypeExamRepository>();
+builder.Services.AddScoped<ITypeExamCommandService, TypeExamCommandService>();
+builder.Services.AddScoped<ITypeExamQueryService, TypeExamQueryService>();
+
+// MedicalExam Bounded Context Injection Configuration
+builder.Services.AddScoped<IMedicalExamRepository, MedicalExamRepository>();
+builder.Services.AddScoped<IMedicalExamCommandService, MedicalExamCommandService>();
+builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
+
+
+
+
+
+// ReasonOfConsultation Bounded Context Injection Configuration
+builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
+builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
+builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultationQueryService>();
 
 var app = builder.Build();
 
