@@ -131,8 +131,15 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-
-        
+        // Patient Context
+        builder.Entity<Patient>().HasKey(t => t.Id);
+        builder.Entity<Patient>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Patient>().OwnsOne(t => t.TypeofBloodName,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.TypeofBloodN).HasColumnName("TypeofBloodName");
+            });
         
         
         

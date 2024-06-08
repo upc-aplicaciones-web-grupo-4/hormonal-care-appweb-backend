@@ -104,7 +104,10 @@ builder.Services.AddScoped<IMedicalExamRepository, MedicalExamRepository>();
 builder.Services.AddScoped<IMedicalExamCommandService, MedicalExamCommandService>();
 builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
 
-
+// Patient Bounded Context Injection Configuration
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientCommandService, PatientCommandService>();
+builder.Services.AddScoped<IPatientQueryService, PatientQueryService>();
 
 
 
