@@ -116,6 +116,10 @@ builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultation
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
 builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultationQueryService>();
 
+// MedicalRecord Bounded Context Injection Configuration
+builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandService>();
+builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
 // Treatment Bounded Context Injection Configuration
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();

@@ -3,7 +3,7 @@ using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
-public class ReasonOfConsultationResourceFromEntityAssembler
+public static class ReasonOfConsultationResourceFromEntityAssembler
 {
     public static ReasonOfConsultationResource ToResourceFromEntity(ReasonOfConsultation entity)
     {
