@@ -173,5 +173,18 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Doctor>().OwnsOne(d => d.codeDoctor);
         builder.Entity<Doctor>().Property(d => d.subscriptionId).IsRequired();
         builder.Entity<Doctor>().OwnsOne(d => d.profileId);
+        
+        // Medical Appointment Context
+        
+        builder.Entity<MedicalAppointment>().HasKey(m => m.Id);
+        builder.Entity<MedicalAppointment>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.eventDate);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.startTime);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.endTime);
+        builder.Entity<MedicalAppointment>().Property(m => m.tittle).IsRequired().HasMaxLength(50);
+        builder.Entity<MedicalAppointment>().Property(m => m.description).IsRequired().HasMaxLength(500);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail);
+        
     }
 }
