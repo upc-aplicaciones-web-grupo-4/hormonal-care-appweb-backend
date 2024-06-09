@@ -10,6 +10,6 @@ public class MedicationTypeQueryService (IMedicationTypeRepository medicationTyp
 {
     public async Task<MedicationType?> Handle(GetMedicationTypeByIdQuery query)
     {
-        return await medicationTypeRepository.FindByIdAsync(query.medicationTypeId);
+        return await medicationTypeRepository.FindByIdAsync(query.Id);
     }
 }

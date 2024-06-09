@@ -10,7 +10,7 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServic
     {
         public async Task<Prescription?> Handle(GetPrescriptionByIdQuery query)
         {
-            return await prescriptionRepository.FindByIdAsync(query.prescriptionId);
+            return await prescriptionRepository.FindByIdAsync(query.Id);
         }
         
     }

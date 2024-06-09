@@ -15,7 +15,7 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServic
         
         public async Task<Medication?> Handle(GetMedicationByIdQuery query)
         {
-            return await medicationRepository.FindByIdAsync(query.medicationId);
+            return await medicationRepository.FindByIdAsync(query.Id);
         }
 
         public Task<Medication?> Handle(GetMedicationsByMedicationTypeIdQuery query)

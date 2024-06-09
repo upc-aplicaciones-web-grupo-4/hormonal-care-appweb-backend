@@ -7,40 +7,31 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices
 {
-    public class PrescriptionCommandService : IPrescriptionCommandService
+    public class PrescriptionCommandService(IPrescriptionRepository prescriptionRepository, IUnitOfWork unitOfWork): IPrescriptionCommandService
     {
-        private readonly IPrescriptionRepository _prescriptionRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public PrescriptionCommandService(IPrescriptionRepository prescriptionRepository, IUnitOfWork unitOfWork)
-        {
-            _prescriptionRepository = prescriptionRepository;
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<Prescription?> Handle(CreatePrescriptionCommand command)
         {
             var prescription = new Prescription(command);
 
-            await _prescriptionRepository.AddAsync(prescription);
-            await _unitOfWork.CompleteAsync();
+            await prescriptionRepository.AddAsync(prescription);
+            await unitOfWork.CompleteAsync();
 
             return prescription;
         }
 
         public async Task<Prescription?> Handle(UpdatePrescriptionCommand command)
         {
-            var prescription = await _prescriptionRepository.FindByIdAsync(command.Id);
+            var prescription = await prescriptionRepository.FindByIdAsync(command.Id);
 
             if (prescription == null)
             {
                 throw new ArgumentException("Prescription not found");
             }
 
-            prescription.Update(command);
+            prescription.Update(command.DoctorId, command.PatientId, command.PrescriptionDate, command.Notes);
 
-            _prescriptionRepository.Update(prescription);
-            await _unitOfWork.CompleteAsync();
+            prescriptionRepository.Update(prescription);
+            await unitOfWork.CompleteAsync();
 
             return prescription;
         }

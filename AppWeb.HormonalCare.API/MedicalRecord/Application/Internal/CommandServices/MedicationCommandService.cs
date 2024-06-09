@@ -1,5 +1,6 @@
 ﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
@@ -7,50 +8,50 @@ using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices
 {
-    public class MedicationCommandService : IMedicationCommandService
+    public class MedicationCommandService(
+        IMedicationRepository medicationRepository,
+        IMedicationTypeRepository medicationTypeRepository,
+        IPrescriptionRepository prescriptionRepository,
+        IUnitOfWork unitOfWork) : IMedicationCommandService
     {
-        private readonly IMedicationRepository _medicationRepository;
-        private readonly IMedicationTypeRepository _medicationTypeRepository;
-        private readonly IPrescriptionRepository _prescriptionRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
-        public MedicationCommandService(IMedicationRepository medicationRepository, IMedicationTypeRepository medicationTypeRepository, IPrescriptionRepository prescriptionRepository, IUnitOfWork unitOfWork)
-        {
-            _medicationRepository = medicationRepository;
-            _medicationTypeRepository = medicationTypeRepository;
-            _prescriptionRepository = prescriptionRepository;
-            _unitOfWork = unitOfWork;
-        }
-
+        
         public async Task<Medication?> Handle(CreateMedicationCommand command)
         {
-            var prescription = await _prescriptionRepository.FindByIdAsync(command.prescriptionId);
-            var medicationType = await _medicationTypeRepository.FindByIdAsync(command.medicationTypeId);
-
-            if (prescription == null || medicationType == null)
+            try
             {
-                throw new ArgumentException("Prescription or MedicationType not found");
+                var prescription = new Prescription(); 
+                var medicationType = new MedicationType(); 
+
+                await prescriptionRepository.AddAsync(prescription);
+                await unitOfWork.CompleteAsync();
+
+                await medicationTypeRepository.AddAsync(medicationType);
+                await unitOfWork.CompleteAsync();
+
+                var medication = new Medication(command, prescription, medicationType);
+                await medicationRepository.AddAsync(medication);
+                await unitOfWork.CompleteAsync();
+
+                return medication;
             }
-
-            var medication = new Medication(command, prescription, medicationType);
-
-            await _medicationRepository.AddAsync(medication);
-            await _unitOfWork.CompleteAsync();
-
-            return medication;
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while creating the prescription  : {e.Message}");
+                return null;
+            }
         }
 
         public async Task<Medication?> Handle(UpdateMedicationCommand command)
         {
-            var medication = await _medicationRepository.FindByIdAsync(command.Id);
+            var medication = await medicationRepository.FindByIdAsync(command.Id);
 
             if (medication == null)
             {
                 throw new ArgumentException("Medication not found");
             }
 
-            var prescription = await _prescriptionRepository.FindByIdAsync(command.prescriptionId);
-            var medicationType = await _medicationTypeRepository.FindByIdAsync(command.medicationTypeId);
+            var prescription = await prescriptionRepository.FindByIdAsync(command.PrescriptionId);
+            var medicationType = await medicationTypeRepository.FindByIdAsync(command.MedicationTypeId);
 
             if (prescription == null || medicationType == null)
             {
@@ -59,8 +60,8 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServ
 
             medication.Update(command, prescription, medicationType);
 
-            _medicationRepository.Update(medication);
-            await _unitOfWork.CompleteAsync();
+            medicationRepository.Update(medication);
+            await unitOfWork.CompleteAsync();
 
             return medication;
         }
