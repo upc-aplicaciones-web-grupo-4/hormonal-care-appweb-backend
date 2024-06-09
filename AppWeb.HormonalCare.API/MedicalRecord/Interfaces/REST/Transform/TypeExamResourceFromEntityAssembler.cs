@@ -7,7 +7,6 @@ public static class TypeExamResourceFromEntityAssembler
 {
     public static TypeExamResource ToResourceFromEntity(TypeExam entity)
     {
-
         return new TypeExamResource(
             entity.Id,
             entity.TypeName

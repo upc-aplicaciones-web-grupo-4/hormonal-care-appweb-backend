@@ -33,11 +33,12 @@ public class MedicalExamController(IMedicalExamCommandService medicalExamCommand
     [HttpGet]
     public async Task<IActionResult> GetAllMedicalExams()
     {
-        var getAllMedicalsExamsQuery = new GetAllMedicalExamsQuery();
-        var medicalExams = await medicalExamQueryService.Handle(getAllMedicalsExamsQuery);
-        var medicalExamResources = medicalExams.Select(MedicalExamResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(medicalExamResources);
+        var getAllMedicalExamsQuery = new GetAllMedicalExamsQuery();
+        var medicalExams = await medicalExamQueryService.Handle(getAllMedicalExamsQuery);
+        var medicalExamsResource = medicalExams.Select(MedicalExamResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(medicalExamsResource);
     }
+    
 
     [HttpGet("{medicalExamId:int}")]
     public async Task<IActionResult> GetMedicalExamById(int medicalExamId)
@@ -49,4 +50,18 @@ public class MedicalExamController(IMedicalExamCommandService medicalExamCommand
         return Ok(medicalExamResource);
     }
     
+    [HttpPut("{medicalExamId:int}")]
+    public async Task<IActionResult> UpdateMedicalExam(int medicalExamId, UpdateMedicalExamResource resource)
+    {
+        if (resource == null || resource.TypeExamIdentifier <= 0)
+        {
+            return BadRequest("Invalid data.");
+        }
+        
+        var updateMedicalExamCommand = UpdateMedicalExamCommandFromResourceAssembler.ToCommandFromResource(medicalExamId, resource);
+        var updatedMedicalExam = await medicalExamCommandService.Handle(updateMedicalExamCommand);
+        if (updatedMedicalExam == null) return BadRequest();
+        var updatedMedicalExamResource = MedicalExamResourceFromEntityAssembler.ToResourceFromEntity(updatedMedicalExam);
+        return Ok(updatedMedicalExamResource);
+    }
 }

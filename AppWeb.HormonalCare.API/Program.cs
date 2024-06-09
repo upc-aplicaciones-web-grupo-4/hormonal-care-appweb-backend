@@ -104,7 +104,10 @@ builder.Services.AddScoped<IMedicalExamRepository, MedicalExamRepository>();
 builder.Services.AddScoped<IMedicalExamCommandService, MedicalExamCommandService>();
 builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
 
-
+// Patient Bounded Context Injection Configuration
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientCommandService, PatientCommandService>();
+builder.Services.AddScoped<IPatientQueryService, PatientQueryService>();
 
 
 
@@ -117,6 +120,17 @@ builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultati
 builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
 builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandService>();
 builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
+// Treatment Bounded Context Injection Configuration
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();
+builder.Services.AddScoped<ITreatmentQueryService, TreatmentQueryService>();
+
+
+// Doctor Bounded Context Injection Configuration
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IDoctorCommandService, DoctorCommandService>();
+builder.Services.AddScoped<IDoctorQueryService, DoctorQueryService>();
+
 
 var app = builder.Build();
 
