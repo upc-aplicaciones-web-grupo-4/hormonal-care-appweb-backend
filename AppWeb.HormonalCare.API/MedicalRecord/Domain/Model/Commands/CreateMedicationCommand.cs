@@ -1,5 +1,4 @@
-﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
-
+﻿
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands
 {
     public record CreateMedicationCommand(

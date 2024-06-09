@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Infrastructure.Persistence.EFC.Repositories
 {
-    public class MedicationRepository (AppDbContext context) : BaseRepository<Medication>(context), IMedicationRepository
+    public class MedicationRepository(AppDbContext context) : BaseRepository<Medication>(context), IMedicationRepository
     {
         public async Task<Medication?> FindByPrescriptionIdAsync(int prescriptionId)
         {
@@ -23,5 +23,20 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Infrastructure.Persistence.EFC.R
                 .Where(m => m.MedicationTypeId == typeId)
                 .FirstOrDefaultAsync();
         }
+
+        public new async Task<Medication?> FindByIdAsync(int id) =>
+            await Context.Set<Medication>()
+                .Include(m => m.Prescription)
+                .Include(m => m.MedicationType)
+                .Where(t => t.Id == id).FirstOrDefaultAsync();
+
+        public new async Task<IEnumerable<Medication>> ListAsync()
+        {
+            return await Context.Set<Medication>()
+                .Include(m => m.Prescription)
+                .Include(m => m.MedicationType)
+                .ToListAsync();
+        }
     }
+
 }

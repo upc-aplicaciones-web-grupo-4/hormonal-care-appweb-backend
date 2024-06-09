@@ -21,24 +21,29 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities
         public DateTime PrescriptionDate { get; set; }
         public string Notes { get; set; }
 
-        public Prescription() { }
+      public Prescription()
+      {
+        
+      }
 
-        public Prescription(DateTime prescriptionDate, int doctorId, int patientId, string notes)
+        public Prescription(int doctorId, int patientId, DateTime prescriptionDate, string notes)
         {
-            PrescriptionDate = prescriptionDate;
             DoctorId = doctorId;
             PatientId = patientId;
+            PrescriptionDate = prescriptionDate;
             Notes = notes;
         }
 
         public Prescription(CreatePrescriptionCommand command)
         {
-            PrescriptionDate = command.PrescriptionDate;
             DoctorId = command.DoctorId;
             PatientId = command.PatientId;
+            PrescriptionDate = command.PrescriptionDate;
             Notes = command.Notes;
         }
         
+        public ICollection<Medication> Medications { get; set; }
+
         public Prescription Update( int doctorId, int patientId,DateTime prescriptionDate, string notes)
         {
             PrescriptionDate = prescriptionDate;
@@ -47,8 +52,7 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities
             Notes = notes;
             return this;
         }
-
-        public ICollection<Medication> Medications { get; set; }
+        
     
 
     }

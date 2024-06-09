@@ -19,35 +19,54 @@ public class MedicationController(
     IPrescriptionCommandService prescriptionCommandService,
     IPrescriptionQueryService prescriptionQueryService) : ControllerBase
 {
-    
     [HttpPost]
-    public async Task<IActionResult> CreateMedication(CreateMedicationResource resource)
+public async Task<IActionResult> CreateMedication(CreateMedicationResource resource)
+{
+    if (resource == null || resource.PrescriptionId <= 0 || resource.MedicationTypeId <= 0)
     {
-        var createMedicationCommand = CreateMedicationCommandFromResourceAssembler.ToCommandFromResource(resource);
-        var medication = await medicationCommandService.Handle(createMedicationCommand);
-        if (medication is null) return BadRequest();
-        var medicationResource = MedicationResourceFromEntityAssembler.ToResourceFromEntity(medication);
-        return CreatedAtAction(nameof(GetMedicationById), new { medicationId = medicationResource.Id }, medicationResource);
+        return BadRequest("Invalid data.");
     }
 
-    [HttpGet("{medicationId:int}")]
-    public async Task<IActionResult> GetMedicationById(int medicationId)
+    var createMedicationCommand = CreateMedicationCommandFromResourceAssembler.ToCommandFromResource(resource);
+    var medication = await medicationCommandService.Handle(createMedicationCommand);
+    if (medication is null) return BadRequest();
+    var medicationResource = MedicationResourceFromEntityAssembler.ToResourceFromEntity(medication);
+    return CreatedAtAction(nameof(GetMedicationById), new { medicationId = medicationResource.Id }, medicationResource);
+}
+
+[HttpGet]
+public async Task<IActionResult> GetAllMedications()
+{
+    var getAllMedicationsQuery = new GetAllMedicationsQuery();
+    var medications = await medicationQueryService.Handle(getAllMedicationsQuery);
+    var medicationResources = medications.Select(MedicationResourceFromEntityAssembler.ToResourceFromEntity);
+    return Ok(medicationResources);
+}
+
+[HttpGet("{medicationId:int}")]
+public async Task<IActionResult> GetMedicationById(int medicationId)
+{
+    var getMedicationByIdQuery = new GetMedicationByIdQuery(medicationId);
+    var medication = await medicationQueryService.Handle(getMedicationByIdQuery);
+    if (medication == null) return NotFound();
+    var medicationResource = MedicationResourceFromEntityAssembler.ToResourceFromEntity(medication);
+    return Ok(medicationResource);
+}
+
+[HttpPut("{medicationId:int}")]
+public async Task<IActionResult> UpdateMedication(int medicationId, UpdateMedicationResource resource)
+{
+    if (resource == null || resource.PrescriptionId <= 0 || resource.MedicationTypeId <= 0)
     {
-        var getMedicationByIdQuery = new GetMedicationByIdQuery(medicationId);
-        var medication = await medicationQueryService.Handle(getMedicationByIdQuery);
-        if (medication == null) return NotFound();
-        var medicationResource = MedicationResourceFromEntityAssembler.ToResourceFromEntity(medication);
-        return Ok(medicationResource);
+        return BadRequest("Invalid data.");
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllMedications()
-    {
-        var getAllMedicationsQuery = new GetAllMedicationsQuery();
-        var medications = await medicationQueryService.Handle(getAllMedicationsQuery);
-        var medicationResources = medications.Select(MedicationResourceFromEntityAssembler.ToResourceFromEntity);
-        return Ok(medicationResources);
-    }
+    var updateMedicationCommand = UpdateMedicationCommandFromResourceAssembler.ToCommandFromResource(medicationId, resource);
+    var updatedMedication = await medicationCommandService.Handle(updateMedicationCommand);
+    if (updatedMedication == null) return BadRequest();
+    var updatedMedicationResource = MedicationResourceFromEntityAssembler.ToResourceFromEntity(updatedMedication);
+    return Ok(updatedMedicationResource);
+}
 
     [HttpPost("prescriptions")]
 public async Task<IActionResult> CreatePrescription(CreatePrescriptionResource resource)
@@ -69,6 +88,15 @@ public async Task<IActionResult> GetPrescriptionById(int prescriptionId)
     return Ok(prescriptionResource);
 }
 
+[HttpPut("prescriptions/{prescriptionId:int}")]
+public async Task<IActionResult> UpdatePrescription(int prescriptionId, UpdatePrescriptionResource resource)
+{
+    var updatePrescriptionCommand = UpdatePrescriptionCommandFromResourceAssembler.ToCommandFromResource(prescriptionId, resource);
+    var updatedPrescription = await prescriptionCommandService.Handle(updatePrescriptionCommand);
+    if (updatedPrescription == null) return BadRequest();
+    var updatedPrescriptionResource = PrescriptionResourceFromEntityAssembler.ToResourceFromEntity(updatedPrescription);
+    return Ok(updatedPrescriptionResource);
+}
 
 [HttpPost("medication-types")]
 public async Task<IActionResult> CreateMedicationType(CreateMedicationTypeResource resource)
@@ -88,6 +116,16 @@ public async Task<IActionResult> GetMedicationTypeById(int medicationTypeId)
     if (medicationType == null) return NotFound();
     var medicationTypeResource = MedicationTypeResourceFromEntityAssembler.ToResourceFromEntity(medicationType);
     return Ok(medicationTypeResource);
+}
+
+[HttpPut("medication-types/{medicationTypeId:int}")]
+public async Task<IActionResult> UpdateMedicationType(int medicationTypeId, UpdateMedicationTypeResource resource)
+{
+    var updateMedicationTypeCommand = UpdateMedicationTypeCommandFromResourceAssembler.ToCommandFromResource(medicationTypeId, resource);
+    var updatedMedicationType = await medicationTypeCommandService.Handle(updateMedicationTypeCommand);
+    if (updatedMedicationType == null) return BadRequest();
+    var updatedMedicationTypeResource = MedicationTypeResourceFromEntityAssembler.ToResourceFromEntity(updatedMedicationType);
+    return Ok(updatedMedicationTypeResource);
 }
 
 }

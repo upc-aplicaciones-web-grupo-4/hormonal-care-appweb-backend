@@ -14,56 +14,66 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServ
         IPrescriptionRepository prescriptionRepository,
         IUnitOfWork unitOfWork) : IMedicationCommandService
     {
-        
         public async Task<Medication?> Handle(CreateMedicationCommand command)
         {
-            try
-            {
-                var prescription = new Prescription(); 
-                var medicationType = new MedicationType(); 
+                    var prescription = await prescriptionRepository.FindByIdAsync(command.PrescriptionId);
+                    if (prescription == null)
+                    {
+                        throw new Exception("Prescription not found");
+                    }
 
-                await prescriptionRepository.AddAsync(prescription);
-                await unitOfWork.CompleteAsync();
+                    var medicationType = await medicationTypeRepository.FindByIdAsync(command.MedicationTypeId);
+                    if (medicationType == null)
+                    {
+                        throw new Exception("MedicationType not found");
+                    }
 
-                await medicationTypeRepository.AddAsync(medicationType);
-                await unitOfWork.CompleteAsync();
-
-                var medication = new Medication(command, prescription, medicationType);
-                await medicationRepository.AddAsync(medication);
-                await unitOfWork.CompleteAsync();
-
-                return medication;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"An error occurred while creating the prescription  : {e.Message}");
-                return null;
-            }
+                    var medication = new Medication(command, prescription, medicationType);
+                    try
+                    {
+                        await medicationRepository.AddAsync(medication);
+                        await unitOfWork.CompleteAsync();
+                        return medication;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"An error occurred while creating the Medication: {e.Message}");
+                        return null;
+                    }
         }
 
         public async Task<Medication?> Handle(UpdateMedicationCommand command)
         {
             var medication = await medicationRepository.FindByIdAsync(command.Id);
-
             if (medication == null)
             {
-                throw new ArgumentException("Medication not found");
+                throw new Exception("Medication not found");
             }
 
             var prescription = await prescriptionRepository.FindByIdAsync(command.PrescriptionId);
-            var medicationType = await medicationTypeRepository.FindByIdAsync(command.MedicationTypeId);
-
-            if (prescription == null || medicationType == null)
+            if (prescription == null)
             {
-                throw new ArgumentException("Prescription or MedicationType not found");
+                throw new Exception("Prescription not found");
+            }
+
+            var medicationType = await medicationTypeRepository.FindByIdAsync(command.MedicationTypeId);
+            if (medicationType == null)
+            {
+                throw new Exception("MedicationType not found");
             }
 
             medication.Update(command, prescription, medicationType);
 
-            medicationRepository.Update(medication);
-            await unitOfWork.CompleteAsync();
-
-            return medication;
+            try
+            {
+                await unitOfWork.CompleteAsync();
+                return medication;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"An error occurred while updating the Medication: {e.Message}");
+                return null;
+            }
         }
     }
 }

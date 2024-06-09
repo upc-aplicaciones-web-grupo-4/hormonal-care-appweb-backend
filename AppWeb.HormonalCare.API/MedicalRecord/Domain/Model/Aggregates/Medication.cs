@@ -55,12 +55,13 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates
             MedicationType = medicationType;
         }
 
-        public Medication(Prescription prescriptionId, MedicationType medicationTypeId, string drugName, int quantity, string concentration,
+        public Medication(int prescriptionId, int medicationTypeId, string drugName, int quantity, string concentration,
             int frequency, string duration)
         {
             // Name = new MedicalExamName(name);
-            Prescription = prescriptionId;
-            MedicationType = medicationTypeId;
+            
+            Prescription = new Prescription () {Id = prescriptionId};
+            MedicationType = new MedicationType() {Id = medicationTypeId};
             DrugName = drugName;
             Quantity = quantity;
             Concentration = concentration;
