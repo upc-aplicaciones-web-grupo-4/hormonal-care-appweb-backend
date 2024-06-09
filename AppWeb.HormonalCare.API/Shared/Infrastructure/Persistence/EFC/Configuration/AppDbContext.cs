@@ -161,5 +161,17 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Treatment>().HasKey(t => t.Id);
         builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
+        
+        
+        // Doctor Context
+        builder.Entity<Doctor>().HasKey(d => d.Id);
+        builder.Entity<Doctor>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Doctor>().OwnsOne(d => d.professionalIdentificationNumber);
+        builder.Entity<Doctor>().OwnsOne(d => d.subSpecialty);
+        builder.Entity<Doctor>().OwnsOne(d => d.certification);
+        builder.Entity<Doctor>().Property(d => d.appointmentFee).IsRequired();
+        builder.Entity<Doctor>().OwnsOne(d => d.codeDoctor);
+        builder.Entity<Doctor>().Property(d => d.subscriptionId).IsRequired();
+        builder.Entity<Doctor>().OwnsOne(d => d.profileId);
     }
 }
