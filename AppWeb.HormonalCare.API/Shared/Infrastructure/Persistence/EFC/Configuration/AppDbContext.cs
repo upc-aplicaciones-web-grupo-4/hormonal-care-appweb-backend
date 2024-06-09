@@ -14,6 +14,7 @@ namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configur
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<ExternalReport> ExternalReports { get; set; }
+    public DbSet<Diagnostic> Diagnostics { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
@@ -253,5 +254,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail);
         builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail);
         
+        builder.Entity<Diagnostic>().HasKey(d => d.Id);
+        builder.Entity<Diagnostic>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Diagnostic>().Property(d => d.Descripcion).IsRequired();
+        
     }
+    
 }

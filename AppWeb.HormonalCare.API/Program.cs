@@ -17,6 +17,7 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using AppWeb.HormonalCare.API.Shared.Interfaces.ASP.Configuration;
+using AppWeb.HormonalCare.API.StoryClinic.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -120,6 +121,12 @@ builder.Services.AddScoped<IReasonOfConsultationQueryService, ReasonOfConsultati
 builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
 builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandService>();
 builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
+builder.Services.AddScoped<IDiagnosticRepository, DiagnosticRepository>(); 
+builder.Services.AddScoped<iDiagnosticCommandService, DiagnosticCommandService>();
+builder.Services.AddScoped<IDiagnosticQueryService, DiagnosticQueryService>();
+builder.Services.AddScoped<iExternalReportCommandService, ExternalReportCommandService>();
+builder.Services.AddScoped<iExternalReportQueryService, ExternalReportQueryService>();
+builder.Services.AddScoped<IExternalReportRepository, ExternalReportRepository>();
 
 
 // Medication Bounded Context Injection Configuration
