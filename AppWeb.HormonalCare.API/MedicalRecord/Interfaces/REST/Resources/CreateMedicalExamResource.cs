@@ -2,4 +2,5 @@
 
 public record CreateMedicalExamResource(
     string Name,
-    int TypeExamIdentifier);
+    int TypeExamIdentifier,
+    int MedicalRecordIdentifier);

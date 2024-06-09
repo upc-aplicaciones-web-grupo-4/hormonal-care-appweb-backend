@@ -9,22 +9,28 @@ public partial class MedicalExam
     {
         Name = new MedicalExamName();
         TypeExamId = 0;
+        MedicalRecordId = 0;
     }
-    public MedicalExam(string name, int typeExamId): this()
+    public MedicalExam(string name, int typeExamId, int medicalRecordId): this()
     {
         Name = new MedicalExamName(name);
         TypeExamId = typeExamId;
+        MedicalRecordId = medicalRecordId;
     }
-    public MedicalExam(CreateMedicalExamCommand command, TypeExam typeExam)
+    public MedicalExam(CreateMedicalExamCommand command, TypeExam typeExam, MedicalRecord medicalRecord)
     {
         Name = new MedicalExamName(command.Name);
         TypeExam = typeExam;
+        MedicalRecord = medicalRecord;
     }
-    public void Update(UpdateMedicalExamCommand command, TypeExam typeExam)
+
+    public void Update(UpdateMedicalExamCommand command, TypeExam typeExam, MedicalRecord medicalRecord)
     {
         Name = new MedicalExamName(command.Name);
         TypeExam = typeExam;
+        MedicalRecord = medicalRecord;
     }
+
 
     public int Id { get; }
     public MedicalExamName Name { get; private set; }
@@ -35,6 +41,12 @@ public partial class MedicalExam
     public int TypeExamId { get; private set; }
     
 
+    public MedicalRecord MedicalRecord { get; private set; }
+    
+    public int MedicalRecordId { get; private set; }
+    
+    
+    
     public string ExamName => Name.ExamName;
 
     // Agrega aquí otras propiedades según sea necesario

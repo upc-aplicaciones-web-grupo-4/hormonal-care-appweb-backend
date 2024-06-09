@@ -22,4 +22,6 @@ public partial class MedicalRecord
         //this.ReasonOfConsultation = reasonOfConsultation;
         ReasonOfConsultationId = reasonOfConsultation.Id;
     }
+    
+    public ICollection<MedicalExam> MedicalExams { get; private set; }
 }

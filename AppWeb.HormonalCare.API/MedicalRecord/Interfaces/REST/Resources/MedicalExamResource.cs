@@ -4,6 +4,7 @@ public record MedicalExamResource(
     int Id,
     string Name,
     //int TypeExamIdentifier
-    TypeExamResource TypeExam)
+    TypeExamResource TypeExam,
+    MedicalRecordResource MedicalRecord)
 {
 }

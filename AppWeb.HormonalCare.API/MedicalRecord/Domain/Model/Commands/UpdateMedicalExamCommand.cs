@@ -3,4 +3,5 @@
 public record UpdateMedicalExamCommand(
     int Id,
     string Name,
-    int TypeExamId);
+    int TypeExamId,
+    int MedicalRecordId);

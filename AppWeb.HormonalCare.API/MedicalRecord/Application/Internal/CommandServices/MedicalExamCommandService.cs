@@ -6,7 +6,7 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
-public class MedicalExamCommandService(IMedicalExamRepository medicalExamRepository, ITypeExamRepository typeExamRepository, IUnitOfWork unitOfWork) : IMedicalExamCommandService
+public class MedicalExamCommandService(IMedicalExamRepository medicalExamRepository, ITypeExamRepository typeExamRepository, IMedicalRecordRepository medicalRecordRepository, IUnitOfWork unitOfWork) : IMedicalExamCommandService
 {
     
 
@@ -17,7 +17,12 @@ public class MedicalExamCommandService(IMedicalExamRepository medicalExamReposit
         {
             throw new Exception("TypeExam not found");
         }
-        var medicalExam = new MedicalExam(command, typeExam);
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        var medicalExam = new MedicalExam(command, typeExam, medicalRecord);
         try
         {
             await medicalExamRepository.AddAsync(medicalExam);
@@ -43,7 +48,13 @@ public class MedicalExamCommandService(IMedicalExamRepository medicalExamReposit
         {
             throw new Exception("TypeExam not found");
         }
-        medicalExam.Update(command, typeExam);
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        
+        medicalExam.Update(command, typeExam, medicalRecord);
         try
         {
             await unitOfWork.CompleteAsync();
