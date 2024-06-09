@@ -4,33 +4,22 @@ using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST;
 
 [ApiController]
-[Route("api/v1/medical-record/medications")]
+[Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-public class MedicationController : ControllerBase
+public class MedicationController(
+    IMedicationCommandService medicationCommandService,
+    IMedicationQueryService medicationQueryService,
+    IMedicationTypeCommandService medicationTypeCommandService,
+    IMedicationTypeQueryService medicationTypeQueryService,
+    IPrescriptionCommandService prescriptionCommandService,
+    IPrescriptionQueryService prescriptionQueryService) : ControllerBase
 {
-    private IMedicationCommandService medicationCommandService;
-    private IMedicationQueryService medicationQueryService;
-    private IMedicationTypeCommandService medicationTypeCommandService;
-    private IMedicationTypeQueryService medicationTypeQueryService;
-    private IPrescriptionCommandService prescriptionCommandService;
-    private IPrescriptionQueryService prescriptionQueryService;
-
-    public MedicationController(IMedicationCommandService medicationCommandService, IMedicationQueryService medicationQueryService, IMedicationTypeCommandService medicationTypeCommandService, IMedicationTypeQueryService medicationTypeQueryService, IPrescriptionCommandService prescriptionCommandService, IPrescriptionQueryService prescriptionQueryService)
-    {
-        this.medicationCommandService = medicationCommandService;
-        this.medicationQueryService = medicationQueryService;
-        this.medicationTypeCommandService = medicationTypeCommandService;
-        this.medicationTypeQueryService = medicationTypeQueryService;
-        this.prescriptionCommandService = prescriptionCommandService;
-        this.prescriptionQueryService = prescriptionQueryService;
-    }
-
+    
     [HttpPost]
     public async Task<IActionResult> CreateMedication(CreateMedicationResource resource)
     {

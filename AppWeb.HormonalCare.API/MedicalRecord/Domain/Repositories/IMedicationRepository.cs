@@ -5,9 +5,6 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 
 public interface IMedicationRepository: IBaseRepository<Medication>
 {
-    
-
     Task<Medication?> FindByPrescriptionIdAsync(int prescriptionId);
     Task<Medication?> FindByMedicationTypeIdAsync(int typeId);
-   
 }

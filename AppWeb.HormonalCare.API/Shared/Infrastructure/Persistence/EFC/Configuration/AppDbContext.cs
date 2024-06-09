@@ -1,9 +1,11 @@
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -145,6 +147,56 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.ReasonOfConsultationId).IsRequired();
         
+        //Medical  Exam Context
+        builder.Entity<MedicalExam>().HasKey(t => t.Id);
+        builder.Entity<MedicalExam>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalExam>().OwnsOne(t => t.Name,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.ExamName).HasColumnName("MedicalExamName");
+            });
+        // Medication Context
+
+        builder.Entity<Medication>().HasKey(m => m.Id);
+        builder.Entity<Medication>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Medication>().Property(m => m.MedicationTypeId).IsRequired();
+        builder.Entity<Medication>().Property(m => m.MedicationTypeId).IsRequired();
+        builder.Entity<Medication>().Property(m => m.DrugName).IsRequired().HasMaxLength(300);
+        builder.Entity<Medication>().Property(m => m.Quantity).IsRequired();
+        builder.Entity<Medication>().Property(m => m.Concentration).IsRequired().HasMaxLength(300);
+        builder.Entity<Medication>().Property(m => m.Frequency).IsRequired();
+        builder.Entity<Medication>().Property(m => m.Duration).IsRequired().HasMaxLength(300);
+
+        // Prescription Context
+
+        builder.Entity<Prescription>().HasKey(p => p.Id);
+        builder.Entity<Prescription>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Prescription>().Property(p => p.DoctorId).IsRequired();
+        builder.Entity<Prescription>().Property(p => p.PatientId).IsRequired();
+        builder.Entity<Prescription>().Property(p => p.PrescriptionDate).IsRequired();
+        builder.Entity<Prescription>().Property(p => p.Notes).HasMaxLength(500);
+        
+
+        // MedicationType Context
+
+        builder.Entity<MedicationType>().HasKey(mt => mt.Id);
+        builder.Entity<MedicationType>().Property(mt => mt.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicationType>().Property(mt => mt.TypeName).IsRequired().HasMaxLength(300);
+        
+
+       // // Relationships
+       // 
+       // builder.Entity<Medication>()
+       //     .HasOne(m => m.Prescription)
+       //     .WithMany(p => p.Medications) // Replace with the property name
+       //     .HasForeignKey(m => m.PrescriptionId);
+
+       // builder.Entity<Medication>()
+       //     .HasOne(m => m.MedicationTypeId)
+       //     .WithMany(mt => mt.Medications) // Replace with the property name
+       //     .HasForeignKey(m => m.MedicationTypeId);
+
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
     }

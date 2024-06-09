@@ -1,4 +1,4 @@
-﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
+﻿/*using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Queries;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
@@ -13,4 +13,4 @@ public class PrescriptionContextFacade(IPrescriptionCommandService prescriptionC
         var prescription = await prescriptionCommandService.Handle(createPrescriptionCommand);
         return prescription?.Id ?? 0;
     }
-}
+}*/

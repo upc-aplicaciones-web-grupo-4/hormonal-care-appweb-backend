@@ -2,4 +2,4 @@
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 
-public record UpdatePrescriptionCommand(int Id,int medicationId, int DoctorId, int PatientId, JSType.Date prescriptionDate, String notes);
+public record UpdatePrescriptionCommand(int Id, int DoctorId, int PatientId, DateTime PrescriptionDate, String Notes);

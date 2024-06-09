@@ -31,5 +31,5 @@ public partial class MedicalExam
 
     public string ExamName => Name.ExamName;
 
-    // Agrega aquí otras propiedades según sea necesario
+ 
 }

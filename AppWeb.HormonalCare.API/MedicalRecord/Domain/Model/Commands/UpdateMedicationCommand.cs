@@ -2,6 +2,6 @@
 {
     public record UpdateMedicationCommand(
         int Id, 
-        int prescriptionId, int medicationTypeId, string drugName, int quantity, string concentration, int frequency, string duration
+        int PrescriptionId, int MedicationTypeId, string DrugName, int Quantity, string Concentration, int Frequency, string Duration
     );
 }

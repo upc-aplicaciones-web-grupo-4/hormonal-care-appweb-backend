@@ -1,3 +1,3 @@
 ﻿namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 
-public record CreateMedicationTypeCommand(String typeName);
+public record CreateMedicationTypeCommand(String TypeName);

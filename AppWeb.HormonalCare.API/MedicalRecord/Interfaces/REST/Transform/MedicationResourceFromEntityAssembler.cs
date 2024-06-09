@@ -9,8 +9,8 @@ public static class MedicationResourceFromEntityAssembler
     {
         return new MedicationResource(
             entity.Id, 
-            PrescriptionResourceFromEntityAssembler.ToResourceFromEntity(entity.Prescription),
-            MedicationTypeResourceFromEntityAssembler.ToResourceFromEntity(entity.MedicationType),
+            entity.PrescriptionId,
+            entity.MedicationTypeId,
             entity.DrugName,
             entity.Quantity,
             entity.Concentration,
