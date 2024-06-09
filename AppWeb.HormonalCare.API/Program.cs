@@ -121,6 +121,13 @@ builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();
 builder.Services.AddScoped<ITreatmentQueryService, TreatmentQueryService>();
 
+
+// Doctor Bounded Context Injection Configuration
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IDoctorCommandService, DoctorCommandService>();
+builder.Services.AddScoped<IDoctorQueryService, DoctorQueryService>();
+
+
 var app = builder.Build();
 
 // Verify Database Objects are created
