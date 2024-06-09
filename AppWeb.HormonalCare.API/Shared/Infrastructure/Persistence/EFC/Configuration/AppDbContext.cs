@@ -4,6 +4,7 @@ using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
 using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configur
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    public DbSet<ExternalReport> ExternalReports { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
@@ -132,6 +134,16 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasForeignKey(t => t.TypeExamId)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
+
+        // Patient Context
+        builder.Entity<Patient>().HasKey(t => t.Id);
+        builder.Entity<Patient>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Patient>().OwnsOne(t => t.TypeofBloodName,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.TypeofBloodN).HasColumnName("TypeofBloodName");
+            });
         
         
         // ReasonOfConsultation Context
@@ -199,5 +211,12 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
+        
+        
+        // Treatment Context
+        
+        builder.Entity<Treatment>().HasKey(t => t.Id);
+        builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
     }
 }

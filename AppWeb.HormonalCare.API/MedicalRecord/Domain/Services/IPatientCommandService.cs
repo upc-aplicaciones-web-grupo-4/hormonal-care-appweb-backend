@@ -3,8 +3,8 @@ using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
-public interface IMedicalExamCommandService
+public interface IPatientCommandService
 {
-    Task<MedicalExam?> Handle(CreateMedicalExamCommand command);
-    Task<MedicalExam?> Handle(UpdateMedicalExamCommand command);
+    Task<Patient?> Handle(CreatePatientCommand command);
+    Task<Patient?> Handle(UpdatePatientCommand command);
 }

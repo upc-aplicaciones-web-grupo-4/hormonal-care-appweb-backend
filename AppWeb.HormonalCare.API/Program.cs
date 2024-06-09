@@ -104,6 +104,13 @@ builder.Services.AddScoped<IMedicalExamRepository, MedicalExamRepository>();
 builder.Services.AddScoped<IMedicalExamCommandService, MedicalExamCommandService>();
 builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
 
+
+// Patient Bounded Context Injection Configuration
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
+builder.Services.AddScoped<IPatientCommandService, PatientCommandService>();
+builder.Services.AddScoped<IPatientQueryService, PatientQueryService>();
+
+
 // ReasonOfConsultation Bounded Context Injection Configuration
 builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
@@ -128,6 +135,12 @@ builder.Services.AddScoped<IPrescriptionQueryService, PrescriptionQueryService>(
 builder.Services.AddScoped<IMedicationTypeRepository, MedicationTypeRepository>();
 builder.Services.AddScoped<IMedicationTypeCommandService, MedicationTypeCommandService>();
 builder.Services.AddScoped<IMedicationTypeQueryService, MedicationTypeQueryService>();
+
+// Treatment Bounded Context Injection Configuration
+builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
+builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();
+builder.Services.AddScoped<ITreatmentQueryService, TreatmentQueryService>();
+
 var app = builder.Build();
 
 // Verify Database Objects are created

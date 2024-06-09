@@ -3,13 +3,10 @@ using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
-public static class TypeExamResourceFromEntityAssembler
+public class TreatmentResourceFromEntityAssembler
 {
-    public static TypeExamResource ToResourceFromEntity(TypeExam entity)
+    public static TreatmentResource ToResourceFromEntity(Treatment entity)
     {
-        return new TypeExamResource(
-            entity.Id,
-            entity.TypeName
-        );
+        return new TreatmentResource(entity.Id, entity.Description);
     }
 }
