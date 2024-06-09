@@ -7,10 +7,10 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.ACL;
 
 public class MedicalExamsContextFacade(IMedicalExamCommandService medicalexamCommandService,IMedicalExamQueryService medicalExamQueryService)   
 {
-    public async Task<int> CreateMedicalExam(string medicalName, int typeExamId)
+    public async Task<int> CreateMedicalExam(string medicalName, int typeExamId, int medicalRecordId)
     {
         
-        var createMedicalExamCommand = new CreateMedicalExamCommand(medicalName, typeExamId);
+        var createMedicalExamCommand = new CreateMedicalExamCommand(medicalName, typeExamId, medicalRecordId);
         var medicalExam = await medicalexamCommandService.Handle(createMedicalExamCommand);
         return medicalExam?.Id ?? 0;
     }
@@ -20,9 +20,9 @@ public class MedicalExamsContextFacade(IMedicalExamCommandService medicalexamCom
         var medicalExam = await medicalExamQueryService.Handle(getMedicalExamByNameQuery);
         return medicalExam?.Id ?? 0;
     }
-public async Task<int> UpdateMedicalExam(int id, string name, int typeExamId)
+public async Task<int> UpdateMedicalExam(int id, string name, int typeExamId, int medicalRecordId)
     {
-        var updateMedicalExamCommand = new UpdateMedicalExamCommand(id, name, typeExamId);
+        var updateMedicalExamCommand = new UpdateMedicalExamCommand(id, name, typeExamId, medicalRecordId);
         var medicalExam = await medicalexamCommandService.Handle(updateMedicalExamCommand);
         return medicalExam?.Id ?? 0;
         

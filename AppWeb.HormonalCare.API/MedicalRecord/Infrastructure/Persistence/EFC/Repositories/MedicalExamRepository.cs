@@ -13,27 +13,23 @@ public class MedicalExamRepository(AppDbContext context) : BaseRepository<Medica
     {
         return Context.Set<MedicalExam>()
             .Include(medicalExam => medicalExam.TypeExam)
+            .Include(medicalExam => medicalExam.MedicalRecord)
             .Where(t => t.Name == name).FirstOrDefaultAsync();
     }
    
     public new async Task<MedicalExam?> FindByIdAsync(int id) =>
         await Context.Set<MedicalExam>().Include(t => t.TypeExam)
+            .Include(medicalExam => medicalExam.MedicalRecord)
             .Where(t => t.Id == id).FirstOrDefaultAsync();
     
     public new async Task<IEnumerable<MedicalExam>> ListAsync()
     {
         return await Context.Set<MedicalExam>()
             .Include(medicalExam => medicalExam.TypeExam)
+            .Include(medicalExam => medicalExam.MedicalRecord)
             .ToListAsync();
     }
-
-    public async Task<IEnumerable<MedicalExam>> FindByTypeExamIdAsync(int typeExamId)
-    {
-        return await Context.Set<MedicalExam>()
-            .Include(medicalExam => medicalExam.TypeExam)
-            .Where(medicalExam => medicalExam.TypeExamId == typeExamId)
-            .ToListAsync();
-    }
+    
     
     
 }

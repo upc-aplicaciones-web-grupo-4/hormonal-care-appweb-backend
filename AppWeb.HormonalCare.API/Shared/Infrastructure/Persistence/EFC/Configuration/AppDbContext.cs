@@ -135,6 +135,14 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
+            .HasMany(m => m.MedicalExams)
+            .WithOne(t => t.MedicalRecord)
+            .HasForeignKey(t => t.MedicalRecordId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+
         // Patient Context
         builder.Entity<Patient>().HasKey(t => t.Id);
         builder.Entity<Patient>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
@@ -220,5 +228,30 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Treatment>().HasKey(t => t.Id);
         builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
+        
+        
+        // Doctor Context
+        builder.Entity<Doctor>().HasKey(d => d.Id);
+        builder.Entity<Doctor>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Doctor>().OwnsOne(d => d.professionalIdentificationNumber);
+        builder.Entity<Doctor>().OwnsOne(d => d.subSpecialty);
+        builder.Entity<Doctor>().OwnsOne(d => d.certification);
+        builder.Entity<Doctor>().Property(d => d.appointmentFee).IsRequired();
+        builder.Entity<Doctor>().OwnsOne(d => d.codeDoctor);
+        builder.Entity<Doctor>().Property(d => d.subscriptionId).IsRequired();
+        builder.Entity<Doctor>().OwnsOne(d => d.profileId);
+        
+        // Medical Appointment Context
+        
+        builder.Entity<MedicalAppointment>().HasKey(m => m.Id);
+        builder.Entity<MedicalAppointment>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.eventDate);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.startTime);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.endTime);
+        builder.Entity<MedicalAppointment>().Property(m => m.tittle).IsRequired().HasMaxLength(50);
+        builder.Entity<MedicalAppointment>().Property(m => m.description).IsRequired().HasMaxLength(500);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail);
+        
     }
 }

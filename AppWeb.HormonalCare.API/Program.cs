@@ -121,6 +121,7 @@ builder.Services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
 builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandService>();
 builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
 
+
 // Medication Bounded Context Injection Configuration
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IMedicationCommandService, MedicationCommandService>();
@@ -140,6 +141,16 @@ builder.Services.AddScoped<IMedicationTypeQueryService, MedicationTypeQueryServi
 builder.Services.AddScoped<ITreatmentRepository, TreatmentRepository>();
 builder.Services.AddScoped<ITreatmentCommandService, TreatmentCommandService>();
 builder.Services.AddScoped<ITreatmentQueryService, TreatmentQueryService>();
+
+// Doctor Bounded Context Injection Configuration
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IDoctorCommandService, DoctorCommandService>();
+builder.Services.AddScoped<IDoctorQueryService, DoctorQueryService>();
+
+// MedicalAppointment Bounded Context Injection Configuration
+builder.Services.AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepository>();
+builder.Services.AddScoped<IMedicalAppointmentCommandService, MedicalAppointmentCommandService>();
+builder.Services.AddScoped<IMedicalAppointmentQueryService, MedicalAppointmentQueryService>();
 
 var app = builder.Build();
 

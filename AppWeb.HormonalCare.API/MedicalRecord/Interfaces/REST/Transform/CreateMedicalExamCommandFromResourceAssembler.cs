@@ -7,6 +7,6 @@ public static class CreateMedicalExamCommandFromResourceAssembler
 {
     public static CreateMedicalExamCommand ToCommandFromResource(CreateMedicalExamResource resource)
     {
-        return new CreateMedicalExamCommand(resource.Name, resource.TypeExamIdentifier);
+        return new CreateMedicalExamCommand(resource.Name, resource.TypeExamIdentifier, resource.MedicalRecordIdentifier);
     }
 }

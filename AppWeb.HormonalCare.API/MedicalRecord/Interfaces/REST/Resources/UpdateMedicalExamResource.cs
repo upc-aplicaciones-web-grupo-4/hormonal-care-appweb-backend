@@ -2,4 +2,5 @@
 
 public record UpdateMedicalExamResource(
     string Name,
-    int TypeExamIdentifier);
+    int TypeExamIdentifier,
+    int MedicalRecordIdentifier);

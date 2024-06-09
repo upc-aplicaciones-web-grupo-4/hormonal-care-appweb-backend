@@ -10,7 +10,8 @@ public static class MedicalExamResourceFromEntityAssembler
         return new MedicalExamResource(
             entity.Id, 
             entity.ExamName,
-            TypeExamResourceFromEntityAssembler.ToResourceFromEntity(entity.TypeExam)
+            TypeExamResourceFromEntityAssembler.ToResourceFromEntity(entity.TypeExam),
+            MedicalRecordResourceFromEntityAssembler.ToResourceFromEntity(entity.MedicalRecord)
         );
     }
 }
