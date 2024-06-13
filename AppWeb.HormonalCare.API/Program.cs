@@ -55,10 +55,10 @@ builder.Services.AddSwaggerGen(
         c.SwaggerDoc("v1",
             new OpenApiInfo
             {
-                Title = "ACME.LearningCenterPlatform.API",
+                Title = "HormonalCare.API",
                 Version = "v1",
-                Description = "ACME Learning Center Platform API",
-                TermsOfService = new Uri("https://acme-learning.com/tos"),
+                Description = "Hormonal Care Platform API",
+                TermsOfService = new Uri("https://hormonal-care.com/tos"),
                 Contact = new OpenApiContact
                 {
                     Name = "ACME Studios",
