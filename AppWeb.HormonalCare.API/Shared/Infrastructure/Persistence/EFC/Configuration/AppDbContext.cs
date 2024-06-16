@@ -1,3 +1,4 @@
+using AppWeb.HormonalCare.API.IAM.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
@@ -220,6 +221,13 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(p => p.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
+        // IAM Context
+        
+        builder.Entity<User>().HasKey(u => u.Id);
+        builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(u => u.Username).IsRequired();
+        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+        
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
         
@@ -257,6 +265,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Diagnostic>().HasKey(d => d.Id);
         builder.Entity<Diagnostic>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Diagnostic>().Property(d => d.Descripcion).IsRequired();
+        
         
     }
     

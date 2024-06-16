@@ -1,3 +1,15 @@
+using AppWeb.HormonalCare.API.IAM.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.IAM.Application.Internal.OutboundServices;
+using AppWeb.HormonalCare.API.IAM.Application.Internal.QueryServices;
+using AppWeb.HormonalCare.API.IAM.Domain.Repositories;
+using AppWeb.HormonalCare.API.IAM.Domain.Services;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Tokens.JWT.Services;
+using AppWeb.HormonalCare.API.IAM.Interfaces.ACL;
+using AppWeb.HormonalCare.API.IAM.Interfaces.ACL.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
@@ -71,6 +83,29 @@ builder.Services.AddSwaggerGen(
                 }
             });
         c.EnableAnnotations();
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
     });
 
 // Configure Lowercase URLs
@@ -159,6 +194,23 @@ builder.Services.AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepo
 builder.Services.AddScoped<IMedicalAppointmentCommandService, MedicalAppointmentCommandService>();
 builder.Services.AddScoped<IMedicalAppointmentQueryService, MedicalAppointmentQueryService>();
 
+
+// IAM Bounded Context Injection Configuration
+
+// TokenSettings Configuration
+
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
+
+
+
 var app = builder.Build();
 
 // Verify Database Objects are created
@@ -175,6 +227,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// Add Authorization Middleware to Pipeline
+app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();
 
