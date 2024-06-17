@@ -154,7 +154,23 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 name.WithOwner().HasForeignKey("Id");
                 name.Property(t => t.TypeofBloodN).HasColumnName("TypeofBloodName");
             });
+        builder.Entity<Patient>().OwnsOne(t => t.PatientRecordId,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.RecordId).HasColumnName("PatientRecordId");
+            });
         
+        
+        
+        // Patient Relationships
+
+        builder.Entity<Profile>()
+            .HasMany(m => m.Patients)
+            .WithOne(t => t.Profile)
+            .HasForeignKey(t => t.ProfileId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
         
         // ReasonOfConsultation Context
 

@@ -11,6 +11,7 @@ using AppWeb.HormonalCare.API.IAM.Infrastructure.Tokens.JWT.Services;
 using AppWeb.HormonalCare.API.IAM.Interfaces.ACL;
 using AppWeb.HormonalCare.API.IAM.Interfaces.ACL.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.outboundservices.acl;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
@@ -20,6 +21,8 @@ using AppWeb.HormonalCare.API.Profiles.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Repositories;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Services;
 using AppWeb.HormonalCare.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using AppWeb.HormonalCare.API.Profiles.Interfaces.ACL;
+using AppWeb.HormonalCare.API.Profiles.Interfaces.ACL.Services;
 using AppWeb.HormonalCare.API.Publishing.Application.Internal.CommandServices;
 using AppWeb.HormonalCare.API.Publishing.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Publishing.Domain.Repositories;
@@ -128,7 +131,7 @@ builder.Services.AddScoped<ITutorialQueryService, TutorialQueryService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
-
+builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
 // TypeExam Bounded Context Injection Configuration
 builder.Services.AddScoped<ITypeExamRepository, TypeExamRepository>();
@@ -145,8 +148,9 @@ builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientCommandService, PatientCommandService>();
 builder.Services.AddScoped<IPatientQueryService, PatientQueryService>();
-
-
+//
+builder.Services.AddScoped<ExternalProfileService>();
+//
 // ReasonOfConsultation Bounded Context Injection Configuration
 builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
@@ -228,7 +232,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 // Add Authorization Middleware to Pipeline
-app.UseRequestAuthorization();
+//app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();
 

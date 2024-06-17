@@ -7,7 +7,15 @@ public class UpdatePatientCommandFromResourceAssembler
 {
     public static UpdatePatientCommand ToCommandFromResource(int id, UpdatePatientResource resource)
     {
-        return new UpdatePatientCommand(id, resource.TypeofBloodName);
+        return new UpdatePatientCommand(id, 
+            resource.FirstName,
+            resource.LastName,
+            resource.Image,
+            resource.Gender,
+            resource.BirthDate,
+            resource.Phone,
+            resource.Email,
+            resource.TypeofBloodName);
     }
 
 }

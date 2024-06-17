@@ -7,6 +7,14 @@ public class CreatePatientCommandFromResourceAssembler
 {
     public static CreatePatientCommand ToCommandFromResource(CreatePatientResource resource)
     {
-        return new CreatePatientCommand(resource.TypeofBloodName);
+        return new CreatePatientCommand(
+            resource.FirstName,
+            resource.LastName,
+            resource.Image,
+            resource.Gender,
+            resource.BirthDate,
+            resource.Phone,
+            resource.Email,
+            resource.TypeofBloodName);
     }
 }
