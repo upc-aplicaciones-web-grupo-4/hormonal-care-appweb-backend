@@ -3,7 +3,7 @@ using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
-public class CreatePatientCommandFromResourceAssembler
+public static class CreatePatientCommandFromResourceAssembler
 {
     public static CreatePatientCommand ToCommandFromResource(CreatePatientResource resource)
     {

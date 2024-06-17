@@ -18,12 +18,14 @@ public class PatientController(IPatientCommandService patientCommandService, IPa
         var createPatientCommand = CreatePatientCommandFromResourceAssembler.ToCommandFromResource(resource);
         var patient = await patientCommandService.Handle(createPatientCommand);
         if (patient is null) return BadRequest();
-        var getPatientByPatientRecordIdQuery = new GetPatientByPatientRecordIdQuery(patient.RecordId);
+        var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patient);
+        return CreatedAtAction(nameof(GetPatientById), new { patientId = patientResource.Id }, patientResource);
+        /*var getPatientByPatientRecordIdQuery = new GetPatientByPatientRecordIdQuery(patient.RecordId);
         var patientByPatientRecordId = await patientQueryService.Handle(getPatientByPatientRecordIdQuery);
         if (patientByPatientRecordId == null) return BadRequest();
         var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patientByPatientRecordId);
         return CreatedAtAction(nameof(GetPatientById), new { patientId = patientResource.Id }, patientResource);
-    }
+    */}
     
     [HttpGet]
     public async Task<IActionResult> GetAllPatients()

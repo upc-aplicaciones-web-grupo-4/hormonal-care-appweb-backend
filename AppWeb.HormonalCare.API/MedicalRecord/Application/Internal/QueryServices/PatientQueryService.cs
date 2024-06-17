@@ -26,6 +26,6 @@ public class PatientQueryService(IPatientRepository patientRepository) : IPatien
     
     public async Task<Patient?> Handle(GetPatientByPatientRecordIdQuery query)
     {
-        return await patientRepository.FindByPatientRecordIdAsync(new PatientRecord(query.PatientRecordId));
+        return await patientRepository.FindByPatientRecordIdAsync(new PatientRecord(query.PatientRecord));
     }
 }
