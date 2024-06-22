@@ -4,5 +4,4 @@ public record CreateMedicalExamCommand(
     string Name,
     int TypeExamId,
     int MedicalRecordId
-    
     );

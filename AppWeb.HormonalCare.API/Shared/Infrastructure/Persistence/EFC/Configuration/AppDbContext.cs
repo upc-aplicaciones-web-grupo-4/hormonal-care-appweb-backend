@@ -1,3 +1,4 @@
+using AppWeb.HormonalCare.API.IAM.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
@@ -151,7 +152,23 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
                 name.WithOwner().HasForeignKey("Id");
                 name.Property(t => t.TypeofBloodN).HasColumnName("TypeofBloodName");
             });
+        builder.Entity<Patient>().OwnsOne(t => t.PatientRecordId,
+            name =>
+            {
+                name.WithOwner().HasForeignKey("Id");
+                name.Property(t => t.RecordId).HasColumnName("PatientRecordId");
+            });
         
+        
+        
+        // Patient Relationships
+
+        builder.Entity<Profile>()
+            .HasMany(m => m.Patients)
+            .WithOne(t => t.Profile)
+            .HasForeignKey(t => t.ProfileId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
         
         // ReasonOfConsultation Context
 
@@ -235,6 +252,13 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<ReportType>().HasKey(t => t.Id);
         builder.Entity<ReportType>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<ReportType>().Property(t => t.Name).IsRequired().HasMaxLength(80);
+        // IAM Context
+        
+        builder.Entity<User>().HasKey(u => u.Id);
+        builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<User>().Property(u => u.Username).IsRequired();
+        builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
+
         
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();

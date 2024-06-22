@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Queries;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
@@ -18,8 +19,13 @@ public class PatientController(IPatientCommandService patientCommandService, IPa
         var patient = await patientCommandService.Handle(createPatientCommand);
         if (patient is null) return BadRequest();
         var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patient);
-        return CreatedAtAction(nameof(GetPatientById), new {patientId = patientResource.Id}, patientResource);
-    }
+        return CreatedAtAction(nameof(GetPatientById), new { patientId = patientResource.Id }, patientResource);
+        /*var getPatientByPatientRecordIdQuery = new GetPatientByPatientRecordIdQuery(patient.RecordId);
+        var patientByPatientRecordId = await patientQueryService.Handle(getPatientByPatientRecordIdQuery);
+        if (patientByPatientRecordId == null) return BadRequest();
+        var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patientByPatientRecordId);
+        return CreatedAtAction(nameof(GetPatientById), new { patientId = patientResource.Id }, patientResource);
+    */}
     
     [HttpGet]
     public async Task<IActionResult> GetAllPatients()
@@ -39,6 +45,22 @@ public class PatientController(IPatientCommandService patientCommandService, IPa
         var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patient);
         return Ok(patientResource);
     }
+    
+    [HttpGet("{patientRecordId}")]
+    public async Task<IActionResult> GetPatientByPatientRecordId(string recordId)
+    {
+        var patientRecordId = new PatientRecord(recordId);
+        var getPatientByPatientRecordIdQuery = new GetPatientByPatientRecordIdQuery(patientRecordId.RecordId);
+        var patient = await patientQueryService.Handle(getPatientByPatientRecordIdQuery);
+        if (patient == null)
+        {
+            return NotFound();
+        }
+        var patientResource = PatientResourceFromEntityAssembler.ToResourceFromEntity(patient);
+        return Ok(patientResource);
+    }
+    
+    
     
     [HttpPut("{patientId:int}")]
     public async Task<IActionResult> UpdatePatient(int patientId, UpdatePatientResource resource)

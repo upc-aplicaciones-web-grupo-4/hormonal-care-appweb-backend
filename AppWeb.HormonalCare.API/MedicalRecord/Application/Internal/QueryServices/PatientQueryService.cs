@@ -1,5 +1,6 @@
 ﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Queries;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
@@ -17,6 +18,14 @@ public class PatientQueryService(IPatientRepository patientRepository) : IPatien
     {
         return await patientRepository.FindByIdAsync(query.PatientId);
     }
-
-
+    
+    public async Task<Patient?> Handle(GetPatientByProfileIdQuery query)
+    {
+        return await patientRepository.FindByProfileIdAsync(query.ProfileId);
+    }
+    
+    public async Task<Patient?> Handle(GetPatientByPatientRecordIdQuery query)
+    {
+        return await patientRepository.FindByPatientRecordIdAsync(new PatientRecord(query.PatientRecord));
+    }
 }

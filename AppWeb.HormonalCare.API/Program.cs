@@ -1,4 +1,17 @@
+using AppWeb.HormonalCare.API.IAM.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.IAM.Application.Internal.OutboundServices;
+using AppWeb.HormonalCare.API.IAM.Application.Internal.QueryServices;
+using AppWeb.HormonalCare.API.IAM.Domain.Repositories;
+using AppWeb.HormonalCare.API.IAM.Domain.Services;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Hashing.BCrypt.Services;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Persistence.EFC.Repositories;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Pipeline.Middleware.Extensions;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Tokens.JWT.Configuration;
+using AppWeb.HormonalCare.API.IAM.Infrastructure.Tokens.JWT.Services;
+using AppWeb.HormonalCare.API.IAM.Interfaces.ACL;
+using AppWeb.HormonalCare.API.IAM.Interfaces.ACL.Services;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
+using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.outboundservices.acl;
 using AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
@@ -8,6 +21,8 @@ using AppWeb.HormonalCare.API.Profiles.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Repositories;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Services;
 using AppWeb.HormonalCare.API.Profiles.Infrastructure.Persistence.EFC.Repositories;
+using AppWeb.HormonalCare.API.Profiles.Interfaces.ACL;
+using AppWeb.HormonalCare.API.Profiles.Interfaces.ACL.Services;
 using AppWeb.HormonalCare.API.Publishing.Application.Internal.CommandServices;
 using AppWeb.HormonalCare.API.Publishing.Application.Internal.QueryServices;
 using AppWeb.HormonalCare.API.Publishing.Domain.Repositories;
@@ -56,10 +71,10 @@ builder.Services.AddSwaggerGen(
         c.SwaggerDoc("v1",
             new OpenApiInfo
             {
-                Title = "ACME.LearningCenterPlatform.API",
+                Title = "HormonalCare.API",
                 Version = "v1",
-                Description = "ACME Learning Center Platform API",
-                TermsOfService = new Uri("https://acme-learning.com/tos"),
+                Description = "Hormonal Care Platform API",
+                TermsOfService = new Uri("https://hormonal-care.com/tos"),
                 Contact = new OpenApiContact
                 {
                     Name = "ACME Studios",
@@ -72,6 +87,29 @@ builder.Services.AddSwaggerGen(
                 }
             });
         c.EnableAnnotations();
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter token",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
     });
 
 // Configure Lowercase URLs
@@ -94,7 +132,7 @@ builder.Services.AddScoped<ITutorialQueryService, TutorialQueryService>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<IProfileCommandService, ProfileCommandService>();
 builder.Services.AddScoped<IProfileQueryService, ProfileQueryService>();
-
+builder.Services.AddScoped<IProfilesContextFacade, ProfilesContextFacade>();
 
 // TypeExam Bounded Context Injection Configuration
 builder.Services.AddScoped<ITypeExamRepository, TypeExamRepository>();
@@ -111,8 +149,9 @@ builder.Services.AddScoped<IMedicalExamQueryService, MedicalExamQueryService>();
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientCommandService, PatientCommandService>();
 builder.Services.AddScoped<IPatientQueryService, PatientQueryService>();
-
-
+//
+builder.Services.AddScoped<ExternalProfileService>();
+//
 // ReasonOfConsultation Bounded Context Injection Configuration
 builder.Services.AddScoped<IReasonOfConsultationRepository, ReasonOfConsultationRepository>();
 builder.Services.AddScoped<IReasonOfConsultationCommandService, ReasonOfConsultationCommandService>();
@@ -169,6 +208,23 @@ builder.Services.AddScoped<IMedicalAppointmentRepository, MedicalAppointmentRepo
 builder.Services.AddScoped<IMedicalAppointmentCommandService, MedicalAppointmentCommandService>();
 builder.Services.AddScoped<IMedicalAppointmentQueryService, MedicalAppointmentQueryService>();
 
+
+// IAM Bounded Context Injection Configuration
+
+// TokenSettings Configuration
+
+builder.Services.Configure<TokenSettings>(builder.Configuration.GetSection("TokenSettings"));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
+
+
+
+
 var app = builder.Build();
 
 // Verify Database Objects are created
@@ -185,6 +241,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// Add Authorization Middleware to Pipeline
+//app.UseRequestAuthorization();
 
 app.UseHttpsRedirection();
 

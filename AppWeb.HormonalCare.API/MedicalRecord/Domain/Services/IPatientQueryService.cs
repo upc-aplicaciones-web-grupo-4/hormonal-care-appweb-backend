@@ -7,4 +7,7 @@ public interface IPatientQueryService
 {
     Task<IEnumerable<Patient>> Handle(GetAllPatientsQuery query);
     Task<Patient?> Handle(GetPatientByIdQuery query);
+    
+    Task<Patient?> Handle(GetPatientByPatientRecordIdQuery query);
+    Task<Patient?> Handle(GetPatientByProfileIdQuery query);
 }

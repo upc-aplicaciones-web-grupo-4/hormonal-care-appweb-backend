@@ -1,6 +1,6 @@
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.Commands;
 using AppWeb.HormonalCare.API.Profiles.Domain.Model.ValueObjects;
-
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 namespace AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using System.ComponentModel.DataAnnotations.Schema;
 /**
@@ -20,6 +20,7 @@ public partial class Profile
         BirthDate = new BirthDate();
         Phone = new PhoneNumber();
         Email = new EmailAddress();
+        Patients = new List<Patient>();
     }
 
     public Profile(string firstName, string lastName, string image, string gender, DateTime birthdate, string phone, string email)
@@ -30,6 +31,7 @@ public partial class Profile
         BirthDate = new BirthDate(birthdate);
         Phone = new PhoneNumber(phone);
         Email = new EmailAddress(email);
+        Patients = new List<Patient>();
     }
 
     public Profile(CreateProfileCommand command)
@@ -40,6 +42,7 @@ public partial class Profile
         BirthDate = new BirthDate(command.BirthDate);
         Phone = new PhoneNumber(command.Phone);
         Email = new EmailAddress(command.Email);
+        Patients = new List<Patient>();
         
     }
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -51,12 +54,19 @@ public partial class Profile
     public PhoneNumber Phone { get; private set; }
     public EmailAddress Email { get; private set; }
     
+    
+    
+    public ICollection<Patient> Patients { get; private set; }
 
+    
+    
     public string FullName => Name.FullName;
     public string ImageUrl => Image.Url;
     public string GenderValue => Gender.Value;
     public DateTime BirthDateValue => BirthDate.Value;
     public string PhoneNumber => Phone.Number;
     public string EmailAddress => Email.Address;
+    
+    
 
 }
