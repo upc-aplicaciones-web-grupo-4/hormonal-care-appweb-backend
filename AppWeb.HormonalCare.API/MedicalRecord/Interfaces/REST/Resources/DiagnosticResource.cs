@@ -1,6 +1,10 @@
-﻿namespace AppWeb.HormonalCare.API.StoryClinic.Interfaces.REST.Resources;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
-public class DiagnosticResource
-{
-    public string Descripcion { get; set; }
-}
+namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
+
+public record DiagnosticResource(
+    int Id,
+    string Description,
+    int ReportTypeId,
+    int MedicalRecordId
+    );

@@ -4,9 +4,8 @@ using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.Publishing.Domain.Model.Entities;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
-using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
-using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
+using EntityFrameworkCore.CreatedUpdatedDate.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -14,7 +13,6 @@ namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configur
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<ExternalReport> ExternalReports { get; set; }
-    public DbSet<Diagnostic> Diagnostics { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         base.OnConfiguring(builder);
@@ -220,6 +218,24 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(p => p.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
+        //Diagnostic Context
+        builder.Entity<Diagnostic>().HasKey(t => t.Id);
+        builder.Entity<Diagnostic>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Diagnostic>().Property(t => t.Description).IsRequired().HasMaxLength(500);
+        builder.Entity<Diagnostic>().Property(t => t.ReportTypeId).IsRequired();
+        builder.Entity<Diagnostic>().Property(t => t.MedicalRecordId).IsRequired();
+        
+        //ExternalReport Context
+        builder.Entity<ExternalReport>().HasKey(t => t.Id);
+        builder.Entity<ExternalReport>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ExternalReport>().Property(t => t.ReportTypeId).IsRequired();
+        builder.Entity<ExternalReport>().Property(t => t.MedicalRecordId).IsRequired();
+
+        //ReportType Context
+        builder.Entity<ReportType>().HasKey(t => t.Id);
+        builder.Entity<ReportType>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ReportType>().Property(t => t.Name).IsRequired().HasMaxLength(80);
+        
         // Apply SnakeCase Naming Convention
         builder.UseSnakeCaseWithPluralizedTableNamingConvention();
         
@@ -229,7 +245,6 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Treatment>().HasKey(t => t.Id);
         builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
-        
         
         // Doctor Context
         builder.Entity<Doctor>().HasKey(d => d.Id);
@@ -254,10 +269,5 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail);
         builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail);
         
-        builder.Entity<Diagnostic>().HasKey(d => d.Id);
-        builder.Entity<Diagnostic>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Diagnostic>().Property(d => d.Descripcion).IsRequired();
-        
     }
-    
 }

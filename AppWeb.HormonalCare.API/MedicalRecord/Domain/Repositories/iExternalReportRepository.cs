@@ -1,6 +1,6 @@
-﻿using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 
-namespace AppWeb.HormonalCare.API.StoryClinic.Domain.Repositories;
+namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 
 public interface IExternalReportRepository
 {

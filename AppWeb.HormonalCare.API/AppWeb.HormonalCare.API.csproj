@@ -17,20 +17,4 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="StoryClinic\**" />
-    </ItemGroup>
-
 </Project>

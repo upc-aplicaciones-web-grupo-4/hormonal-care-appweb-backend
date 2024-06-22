@@ -1,9 +1,10 @@
-﻿using AppWeb.HormonalCare.API.Publishing.Domain.Services;
-using AppWeb.HormonalCare.API.StoryClinic.Interfaces.REST.Resources;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
+using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
-namespace AppWeb.HormonalCare.API.StoryClinic
+namespace AppWeb.HormonalCare.API.MedicalRecord
 {
     [ApiController]
     [Route("/api/v1/diagnostic")]
@@ -27,7 +28,11 @@ namespace AppWeb.HormonalCare.API.StoryClinic
             {
                 return NotFound();
             }
-            return Ok(diagnostics);
+
+            var transform = new DiagnosticTransform();
+            var diagnosticResources = diagnostics.Select(transform.ToResource);
+
+            return Ok(diagnosticResources);
         }
 
         // Método POST
@@ -39,7 +44,12 @@ namespace AppWeb.HormonalCare.API.StoryClinic
                 return BadRequest(ModelState);
             }
 
-            var result = await _commandService.CreateDiagnosticAsync(diagnosticResource);
+            var transform = new DiagnosticTransform();
+
+            var diagnostic = transform.ToEntity(diagnosticResource);
+
+            // Create the Diagnostic entity
+            var result = await _commandService.CreateDiagnosticAsync(diagnostic);
 
             if (!result.Success)
             {

@@ -1,12 +1,15 @@
-﻿using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 
-namespace AppWeb.HormonalCare.API.StoryClinic.Domain.Repositories;
-
-public interface IReportTypeRepository
+namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories
 {
-    Task<ReportType> GetByIdAsync(int id);
-    Task<IEnumerable<ReportType>> GetAllAsync();
-    Task AddAsync(ReportType entity);
-    void Update(ReportType entity);
-    void Delete(ReportType entity);
+    public interface IReportTypeRepository
+    {
+        Task<ReportType> GetByIdAsync(int id);
+        Task<IEnumerable<ReportType>> GetAllAsync();
+        Task AddAsync(ReportType entity);
+        
+        Task CompleteAsync();
+        void Update(ReportType entity);
+        void Delete(ReportType entity);
+    }
 }

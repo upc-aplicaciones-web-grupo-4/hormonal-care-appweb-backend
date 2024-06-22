@@ -1,8 +1,8 @@
-﻿using AppWeb.HormonalCare.API.Publishing.Domain.Services;
-using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
-using AppWeb.HormonalCare.API.StoryClinic.Domain.Repositories;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 
-namespace AppWeb.HormonalCare.API.Publishing.Application.Internal.QueryServices;
+namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
 
 public class ExternalReportQueryService : iExternalReportQueryService
 {
