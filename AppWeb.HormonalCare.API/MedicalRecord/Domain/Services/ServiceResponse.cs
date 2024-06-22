@@ -1,4 +1,4 @@
-﻿namespace AppWeb.HormonalCare.API.Publishing.Domain.Services;
+﻿namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
 public class ServiceResponse<T>
 {

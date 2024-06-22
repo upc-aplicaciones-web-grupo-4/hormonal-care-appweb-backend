@@ -1,9 +1,8 @@
-using AppWeb.HormonalCare.API.Publishing.Domain.Services;
-using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
-using AppWeb.HormonalCare.API.StoryClinic.Domain.Repositories;
-using AppWeb.HormonalCare.API.StoryClinic.Interfaces.REST.Resources;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 
-namespace AppWeb.HormonalCare.API.Publishing.Application.Internal.CommandServices;
+namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
 public class DiagnosticCommandService : iDiagnosticCommandService
 {
@@ -14,13 +13,8 @@ public class DiagnosticCommandService : iDiagnosticCommandService
         _diagnosticRepository = diagnosticRepository;
     }
 
-    public async Task<ServiceResponse<Diagnostic>> CreateDiagnosticAsync(DiagnosticResource diagnosticResource)
+    public async Task<ServiceResponse<Diagnostic>> CreateDiagnosticAsync(Diagnostic diagnostic)
     {
-        var diagnostic = new Diagnostic
-        {
-            Descripcion = diagnosticResource.Descripcion
-        };
-
         try
         {
             await _diagnosticRepository.CreateDiagnosticAsync(diagnostic);

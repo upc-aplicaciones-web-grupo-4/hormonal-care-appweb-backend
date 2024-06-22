@@ -1,7 +1,9 @@
-﻿namespace AppWeb.HormonalCare.API.StoryClinic.Interfaces.REST.Resources;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
-public class ExternalReportResource
-{
-    public string Description { get; set; }
-    public int ReportTypeId { get; set; }
-}
+namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
+
+public record ExternalReportResource(
+    int Id,
+    int ReportTypeId,
+    int MedicalRecordId
+    );

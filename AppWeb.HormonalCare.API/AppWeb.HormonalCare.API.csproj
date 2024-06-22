@@ -19,20 +19,4 @@
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="StoryClinic\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="StoryClinic\**" />
-    </ItemGroup>
-
 </Project>

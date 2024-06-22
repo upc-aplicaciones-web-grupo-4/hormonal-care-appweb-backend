@@ -1,6 +1,6 @@
-﻿using AppWeb.HormonalCare.API.StoryClinic.Domain.Model.Entities;
+﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Entities;
 
-namespace AppWeb.HormonalCare.API.Publishing.Domain.Services;
+namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
 public interface IDiagnosticQueryService
 {
