@@ -16,4 +16,9 @@ public class DoctorQueryService(IDoctorRepository doctorRepository) : IDoctorQue
     {
         return await doctorRepository.FindByIdAsync(query.DoctorId);
     }
+    
+    public async Task<Doctor?> Handle(GetDoctorByProfileIdQuery query)
+    {
+        return await doctorRepository.FindByProfileIdAsync(query.ProfileId);
+    }
 }

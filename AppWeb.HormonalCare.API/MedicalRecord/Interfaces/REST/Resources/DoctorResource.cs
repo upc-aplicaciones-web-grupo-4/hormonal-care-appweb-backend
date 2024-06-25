@@ -1,13 +1,15 @@
-﻿namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
+﻿using AppWeb.HormonalCare.API.Profiles.Interfaces.REST.Resources;
+
+namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
 public record DoctorResource
 (
     int Id,
-    string ProfessionalIdentificationNumber,
+    int ProfessionalIdentificationNumber,
     string SubSpecialty,
     string Certification,
     int AppointmentFee,
     int SubscriptionId,
-    int ProfileId,
-    string CodeDoctorValue  // Agrega esta línea
+    ProfileResource ProfileId,
+    string CodeDoctorValue  
 );

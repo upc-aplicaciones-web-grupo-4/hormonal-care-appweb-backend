@@ -1,5 +1,6 @@
 ﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
+using AppWeb.HormonalCare.API.Profiles.Domain.Model.Aggregates;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 
@@ -14,51 +15,50 @@ public partial class Doctor
         appointmentFee = 0;
         codeDoctor = new CodeDoctor();
         subscriptionId = 0;
-        profileId = new ProfileId();
+        profileId = 0;
     }
-
-    public Doctor(string professionalIdentificationNumber, string subSpecialty, string certification, int appointmentFee, int subscriptionId, int profileId)
+    
+    public Doctor(
+        int professionalIdentificationNumber, 
+        string subSpecialty, 
+        string certification, 
+        int appointmentFee, 
+        int subscriptionId, 
+        int profileId)
     {
         this.professionalIdentificationNumber = new ProfessionalIdentificationNumber(professionalIdentificationNumber);
         this.subSpecialty = new SubSpecialty(subSpecialty);
         this.certification = new Certification(certification);
         this.appointmentFee = appointmentFee;
         this.subscriptionId = subscriptionId;
-        this.profileId = new ProfileId(profileId);
+        this.profileId = profileId;
+        this.codeDoctor = new CodeDoctor();
     }
 
-    public Doctor(CreateDoctorCommand command)
+    public Doctor(CreateDoctorCommand command, Profile profile)
     {
-        professionalIdentificationNumber = new ProfessionalIdentificationNumber(command.ProfessionalIdentificationNumber);
-        subSpecialty = new SubSpecialty(command.SubSpecialty);
-        certification = new Certification(command.Certification);
-        appointmentFee = command.AppointmentFee;
-        codeDoctor = new CodeDoctor(GenerateCodeDoctor());
-        subscriptionId = command.SubscriptionId;
-        profileId = new ProfileId(command.ProfileId);
+        this.professionalIdentificationNumber = new ProfessionalIdentificationNumber(command.ProfessionalIdentificationNumber);
+        this.subSpecialty = new SubSpecialty(command.SubSpecialty);
+        this.certification = new Certification(command.Certification);
+        this.appointmentFee = command.AppointmentFee;
+        this.codeDoctor = new CodeDoctor(GenerateCodeDoctor());
+        this.subscriptionId = command.SubscriptionId;
+        this.profile = profile;
     }
 
     
-    public void UpdateAppointmentFee(UpdateDoctorAppointmentFeeCommand command)
+    public void Update(UpdateDoctorCommand command)
     {
         this.appointmentFee = command.appointmentFee;
-    }
-    
-    public void UpdateSubscriptionId(UpdateDoctorSubscriptionIdCommand command)
-    {
         this.subscriptionId = command.subscriptionId;
     }
     
     private string GenerateCodeDoctor()
     {
-        return "D" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+        return "D" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
     
-    public string CodeDoctorValue
-    {
-        get { return this.codeDoctor.Value; }
-    }
-    
+   
     public int Id { get; private set; }
     public  ProfessionalIdentificationNumber professionalIdentificationNumber { get; private set; }
     public  SubSpecialty subSpecialty { get; private set; }
@@ -66,6 +66,15 @@ public partial class Doctor
     public int appointmentFee { get; private set; }
     public  CodeDoctor codeDoctor{ get; private set; }
     public int subscriptionId { get; private set; }
-    public ProfileId profileId { get; private set; }
+    public Profile profile { get; private set; }
+    public int profileId { get; private set; }
+    
+    public int ProfessionalIdentificationNumberValue => professionalIdentificationNumber.professionalIdentificationNumber;
+    public string SubSpecialtyValue => subSpecialty.subSpecialty;
+    public string CertificationValue => certification.certification;
+    public string CodeDoctorValue => codeDoctor.codeDoctor;
+    public int SubscriptionIdValue => subscriptionId;
+    public int AppointmentFeeValue => appointmentFee;
+    
 }
 

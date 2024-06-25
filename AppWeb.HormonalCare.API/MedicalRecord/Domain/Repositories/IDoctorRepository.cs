@@ -5,5 +5,5 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Repositories;
 
 public interface IDoctorRepository: IBaseRepository<Doctor>
 {
-    
+    Task<Doctor?> FindByProfileIdAsync(int profileId);
 }

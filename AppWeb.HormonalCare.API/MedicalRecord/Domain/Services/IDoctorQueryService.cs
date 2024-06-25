@@ -7,4 +7,5 @@ public interface IDoctorQueryService
 {
     Task<IEnumerable<Doctor>> Handle(GetAllDoctorsQuery query);
     Task<Doctor?> Handle(GetDoctorByIdQuery query);
+    Task<Doctor?> Handle(GetDoctorByProfileIdQuery query);
 }

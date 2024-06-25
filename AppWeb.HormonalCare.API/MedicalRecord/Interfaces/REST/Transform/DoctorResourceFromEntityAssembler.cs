@@ -1,5 +1,6 @@
 ﻿using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
+using AppWeb.HormonalCare.API.Profiles.Interfaces.REST.Transform;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
@@ -14,8 +15,8 @@ public class DoctorResourceFromEntityAssembler
             entity.certification.certification,
             entity.appointmentFee,
             entity.subscriptionId,
-            entity.profileId.profileId,
-            entity.CodeDoctorValue  // Agrega esta línea
+            ProfileResourceFromEntityAssembler.ToResourceFromEntity(entity.profile),
+            entity.CodeDoctorValue
         );
     }
 }

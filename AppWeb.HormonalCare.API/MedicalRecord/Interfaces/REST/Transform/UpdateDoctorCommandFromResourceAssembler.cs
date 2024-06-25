@@ -3,11 +3,11 @@ using AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Transform;
 
-public class CreateDoctorCommandFromResourceAssembler
+public class UpdateDoctorCommandFromResourceAssembler
 {
-    public static CreateDoctorCommand ToCommandFromResource(CreateDoctorResource resource)
+    public static UpdateDoctorCommand ToCommandFromResource(int id, UpdateDoctorRecourse resource)
     {
-        return new CreateDoctorCommand(
+        return new UpdateDoctorCommand(id, 
             resource.FirstName,
             resource.LastName,
             resource.Image,
@@ -15,11 +15,8 @@ public class CreateDoctorCommandFromResourceAssembler
             resource.BirthDate,
             resource.Phone,
             resource.Email,
-            resource.ProfessionalIdentificationNumber, 
-            resource.SubSpecialty,
-            resource.Certification,
-            resource.AppointmentFee,
-            resource.SubscriptionId
+            resource.appointmentFee,
+            resource.subscriptionId
             );
     }
 }

@@ -260,8 +260,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
 
         
-        // Apply SnakeCase Naming Convention
-        builder.UseSnakeCaseWithPluralizedTableNamingConvention();
+        
         
         
         // Treatment Context
@@ -270,28 +269,84 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Treatment>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<Treatment>().Property(t => t.Description).IsRequired().HasMaxLength(500);
         
+        // Treatment Relationships
+        
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
+            .HasMany(m => m.Treatments)
+            .WithOne(t => t.MedicalRecord)
+            .HasForeignKey(t => t.MedicalRecordId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         // Doctor Context
         builder.Entity<Doctor>().HasKey(d => d.Id);
         builder.Entity<Doctor>().Property(d => d.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<Doctor>().OwnsOne(d => d.professionalIdentificationNumber);
-        builder.Entity<Doctor>().OwnsOne(d => d.subSpecialty);
-        builder.Entity<Doctor>().OwnsOne(d => d.certification);
+        builder.Entity<Doctor>().OwnsOne(d => d.professionalIdentificationNumber,
+            pin =>
+            {
+                pin.WithOwner().HasForeignKey("Id");
+                pin.Property(d => d.professionalIdentificationNumber).HasColumnName("ProfessionalIdentificationNumber");
+            });
+        builder.Entity<Doctor>().OwnsOne(d => d.subSpecialty, subspeclt =>
+        {
+            subspeclt.WithOwner().HasForeignKey("Id");
+            subspeclt.Property(d => d.subSpecialty).HasColumnName("SubSpecialty");
+        });
+        builder.Entity<Doctor>().OwnsOne(d => d.certification, certificate =>
+        {
+            certificate.WithOwner().HasForeignKey("Id");
+            certificate.Property(d => d.certification).HasColumnName("Certification");
+        });
         builder.Entity<Doctor>().Property(d => d.appointmentFee).IsRequired();
-        builder.Entity<Doctor>().OwnsOne(d => d.codeDoctor);
+        builder.Entity<Doctor>().OwnsOne(d => d.codeDoctor, code =>
+        {
+            code.WithOwner().HasForeignKey("Id");
+            code.Property(d => d.codeDoctor).HasColumnName("CodeDoctor");
+        });
         builder.Entity<Doctor>().Property(d => d.subscriptionId).IsRequired();
-        builder.Entity<Doctor>().OwnsOne(d => d.profileId);
+        
+        // Doctor Relationships
+        builder.Entity<Profile>()
+            .HasMany(m => m.Doctors)
+            .WithOne(t => t.profile)
+            .HasForeignKey(t => t.profileId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
         
         // Medical Appointment Context
         
         builder.Entity<MedicalAppointment>().HasKey(m => m.Id);
         builder.Entity<MedicalAppointment>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<MedicalAppointment>().OwnsOne(m => m.eventDate);
-        builder.Entity<MedicalAppointment>().OwnsOne(m => m.startTime);
-        builder.Entity<MedicalAppointment>().OwnsOne(m => m.endTime);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.eventDate, date =>
+        {
+            date.WithOwner().HasForeignKey("Id");
+            date.Property(m => m.eventDate).HasColumnName("EventDate");
+        });
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.startTime, time =>
+        {
+            time.WithOwner().HasForeignKey("Id");
+            time.Property(m => m.startTime).HasColumnName("StartTime");
+        });
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.endTime, time =>
+        {
+            time.WithOwner().HasForeignKey("Id");
+            time.Property(m => m.endTime).HasColumnName("EndTime");
+        });
         builder.Entity<MedicalAppointment>().Property(m => m.tittle).IsRequired().HasMaxLength(50);
         builder.Entity<MedicalAppointment>().Property(m => m.description).IsRequired().HasMaxLength(500);
-        builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail);
-        builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail);
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.doctorEmail, email =>
+        {
+            email.WithOwner().HasForeignKey("Id");
+            email.Property(m => m.doctorEmail).HasColumnName("DoctorEmail");
+        });
+        builder.Entity<MedicalAppointment>().OwnsOne(m => m.patientEmail, email =>
+        {
+            email.WithOwner().HasForeignKey("Id");
+            email.Property(m => m.patientEmail).HasColumnName("PatientEmail");
+        });
         
+        
+        // Apply SnakeCase Naming Convention
+        builder.UseSnakeCaseWithPluralizedTableNamingConvention();
     }
 }

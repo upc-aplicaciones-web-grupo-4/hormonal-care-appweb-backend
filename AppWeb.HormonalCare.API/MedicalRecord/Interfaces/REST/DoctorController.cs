@@ -43,21 +43,16 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST;
             return Ok(doctorResource);
         }
 
-        [HttpPut("{doctorId:int}/appointmentfee")]
-        public async Task<IActionResult> UpdateDoctorAppointmentFee(int doctorId, UpdateDoctorAppointmentFeeRecourse resource)
+        [HttpPut("{doctorId:int}")]
+        public async Task<IActionResult> UpdateDoctor(int doctorId, UpdateDoctorRecourse resource)
         {
-            var updateDoctorAppointmentFeeCommand = UpdateDoctorAppointmentFeeCommandFromResourceAssembler.ToCommandFromResource(doctorId, resource);
-            var updatedDoctor = await doctorCommandService.Handle(updateDoctorAppointmentFeeCommand);
-            if (updatedDoctor == null) return BadRequest();
-            var updatedDoctorResource = DoctorResourceFromEntityAssembler.ToResourceFromEntity(updatedDoctor);
-            return Ok(updatedDoctorResource);
-        }
-
-        [HttpPut("{doctorId:int}/subscriptionid")]
-        public async Task<IActionResult> UpdateDoctorSubscriptionId(int doctorId, UpdateDoctorSubscriptionIdResource resource)
-        {
-            var updateDoctorSubscriptionIdCommand = UpdateDoctorSubscriptionIdCommandFromResourceAssembler.ToCommandFromResource(doctorId, resource);
-            var updatedDoctor = await doctorCommandService.Handle(updateDoctorSubscriptionIdCommand);
+            if (resource == null )
+            {
+                return BadRequest("Invalid data.");
+            }
+            
+            var updateDoctorCommand = UpdateDoctorCommandFromResourceAssembler.ToCommandFromResource(doctorId, resource);
+            var updatedDoctor = await doctorCommandService.Handle(updateDoctorCommand);
             if (updatedDoctor == null) return BadRequest();
             var updatedDoctorResource = DoctorResourceFromEntityAssembler.ToResourceFromEntity(updatedDoctor);
             return Ok(updatedDoctorResource);

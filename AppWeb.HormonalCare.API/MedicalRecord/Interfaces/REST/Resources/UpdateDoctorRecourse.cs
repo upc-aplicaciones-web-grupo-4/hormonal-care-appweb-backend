@@ -1,6 +1,6 @@
 ﻿namespace AppWeb.HormonalCare.API.MedicalRecord.Interfaces.REST.Resources;
 
-public record CreateDoctorResource(
+public record UpdateDoctorRecourse(
     string FirstName, 
     string LastName, 
     string Image, 
@@ -8,9 +8,6 @@ public record CreateDoctorResource(
     DateTime BirthDate, 
     string Phone, 
     string Email,
-    int ProfessionalIdentificationNumber,
-    string SubSpecialty,
-    string Certification,
-    int AppointmentFee,
-    int SubscriptionId
+    int appointmentFee,
+    int subscriptionId
     );

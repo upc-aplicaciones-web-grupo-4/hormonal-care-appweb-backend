@@ -1,8 +1,8 @@
 ﻿namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
 
-public record ProfessionalIdentificationNumber(string professionalIdentificationNumber)
+public record ProfessionalIdentificationNumber(int professionalIdentificationNumber)
 {
-    public ProfessionalIdentificationNumber() : this(string.Empty)
+    public ProfessionalIdentificationNumber() : this(0)
     {
         
     }

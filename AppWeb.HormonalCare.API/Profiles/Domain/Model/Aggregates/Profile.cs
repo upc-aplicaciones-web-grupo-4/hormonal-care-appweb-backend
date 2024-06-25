@@ -57,6 +57,8 @@ public partial class Profile
     
     
     public ICollection<Patient> Patients { get; private set; }
+    
+    public ICollection<Doctor> Doctors { get; private set; }
 
     
     
