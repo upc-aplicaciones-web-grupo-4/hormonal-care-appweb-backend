@@ -7,11 +7,16 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
 
-public class TreatmentCommandService(ITreatmentRepository treatmentRepository, IUnitOfWork unitOfWork): ITreatmentCommandService
+public class TreatmentCommandService(ITreatmentRepository treatmentRepository, IMedicalRecordRepository medicalRecordRepository, IUnitOfWork unitOfWork): ITreatmentCommandService
 {
     public async Task<Treatment?> Handle(CreateTreatmentCommand command)
     {
-        var treatment = new Treatment(command);
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        var treatment = new Treatment(command, medicalRecord);
         try
         {
             await treatmentRepository.AddAsync(treatment);

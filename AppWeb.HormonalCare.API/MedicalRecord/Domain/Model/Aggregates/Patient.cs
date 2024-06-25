@@ -47,4 +47,7 @@ public partial class Patient
     
     public string TypeofBloodN => TypeofBloodName.TypeofBloodN;
     public string RecordId => PatientRecordId.RecordId;
+
+    public ICollection<MedicalRecord> MedicalRecords { get; private set; }
+
 }

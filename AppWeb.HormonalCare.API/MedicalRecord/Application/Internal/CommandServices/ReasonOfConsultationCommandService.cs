@@ -6,11 +6,16 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
-public class ReasonOfConsultationCommandService(IReasonOfConsultationRepository reasonOfConsultationRepository, IUnitOfWork unitOfWork) : IReasonOfConsultationCommandService
+public class ReasonOfConsultationCommandService(IReasonOfConsultationRepository reasonOfConsultationRepository, IMedicalRecordRepository medicalRecordRepository, IUnitOfWork unitOfWork) : IReasonOfConsultationCommandService
 {
     public async Task<ReasonOfConsultation?> Handle(CreateReasonOfConsultationCommand command)
     {
-        var reasonOfConsultation = new ReasonOfConsultation(command);
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        var reasonOfConsultation = new ReasonOfConsultation(command, medicalRecord);
         try
         {
             await reasonOfConsultationRepository.AddAsync(reasonOfConsultation);

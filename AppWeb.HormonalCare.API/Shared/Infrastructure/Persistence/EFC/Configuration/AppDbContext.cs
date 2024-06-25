@@ -134,7 +134,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasForeignKey(t => t.TypeExamId)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
-
+        // MedicalRecord Relationships
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
             .HasMany(m => m.MedicalExams)
             .WithOne(t => t.MedicalRecord)
@@ -142,6 +142,20 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
+            .HasMany(m => m.ReasonOfConsultations)
+            .WithOne(t => t.MedicalRecord)
+            .HasForeignKey(t => t.MedicalRecordId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
+            .HasMany(m => m.Treatments)
+            .WithOne(t => t.MedicalRecord)
+            .HasForeignKey(t => t.MedicalRecordId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         // Patient Context
         builder.Entity<Patient>().HasKey(t => t.Id);
@@ -170,6 +184,10 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
+        
+        
+        
+        
         // ReasonOfConsultation Context
 
         builder.Entity<ReasonOfConsultation>().HasKey(r => r.Id);
@@ -181,7 +199,15 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().HasKey(m => m.Id);
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>().Property(m => m.ReasonOfConsultationId).IsRequired();
+        
+        //MedicalRecord Relationships
+        builder.Entity<Patient>()
+            .HasMany(m => m.MedicalRecords)
+            .WithOne(t => t.Patient)
+            .HasForeignKey(t => t.PatientId)
+            .HasPrincipalKey(t => t.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         
         //Medical  Exam Context
         builder.Entity<MedicalExam>().HasKey(t => t.Id);
@@ -252,8 +278,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<ReportType>().HasKey(t => t.Id);
         builder.Entity<ReportType>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<ReportType>().Property(t => t.Name).IsRequired().HasMaxLength(80);
-        // IAM Context
         
+        // IAM Context
         builder.Entity<User>().HasKey(u => u.Id);
         builder.Entity<User>().Property(u => u.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<User>().Property(u => u.Username).IsRequired();
@@ -282,7 +308,6 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.Entity<Doctor>().OwnsOne(d => d.profileId);
         
         // Medical Appointment Context
-        
         builder.Entity<MedicalAppointment>().HasKey(m => m.Id);
         builder.Entity<MedicalAppointment>().Property(m => m.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Entity<MedicalAppointment>().OwnsOne(m => m.eventDate);

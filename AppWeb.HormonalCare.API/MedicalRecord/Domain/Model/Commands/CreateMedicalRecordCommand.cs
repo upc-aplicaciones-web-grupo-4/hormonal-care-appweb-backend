@@ -1,3 +1,3 @@
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 
-public record CreateMedicalRecordCommand();
+public record CreateMedicalRecordCommand(int PatientId);

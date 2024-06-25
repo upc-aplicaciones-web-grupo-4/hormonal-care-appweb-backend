@@ -7,28 +7,33 @@ public partial class ReasonOfConsultation
     public int Id { get; }
     public string Description { get; private set; }
     public string Symptoms { get; private set; }
+    
+    
+    public MedicalRecord MedicalRecord { get; private set; }
+    
+    public int MedicalRecordId { get; private set; }
 
-    //public MedicalRecord MedicalRecord { get; set; }
+ 
     
     public ReasonOfConsultation()
     {
-        //MedicalRecord = new MedicalRecord();
         Description = string.Empty;
         Symptoms = string.Empty;
+        MedicalRecordId = 0;
     }
 
-    public ReasonOfConsultation(string description, string symptoms)
+    public ReasonOfConsultation(string description, string symptoms, int medicalRecordId)
     {
-        //MedicalRecord = new MedicalRecord();
         Description = description;
         Symptoms = symptoms;
+        MedicalRecordId = medicalRecordId;
     }
 
-    public ReasonOfConsultation(CreateReasonOfConsultationCommand command)
+    public ReasonOfConsultation(CreateReasonOfConsultationCommand command, MedicalRecord medicalRecord)
     {
-        //MedicalRecord = new MedicalRecord();
         Description = command.Description;
         Symptoms = command.Symptoms;
+        MedicalRecord = medicalRecord;
     }
 
     public ReasonOfConsultation UpdateInformation(string description, string symptoms)

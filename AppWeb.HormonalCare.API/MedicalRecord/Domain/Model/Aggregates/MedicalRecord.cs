@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Commands;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.Aggregates;
 
@@ -6,22 +7,27 @@ public partial class MedicalRecord
 {
     public int Id { get; set; }
     
-    //public ReasonOfConsultation ReasonOfConsultation { get; set; }
+    public Patient Patient { get;  set; }
 
-    public int ReasonOfConsultationId { get; set; }
+    public int PatientId { get;  set; }
     
     
     
     public MedicalRecord()
     {
-        //this.ReasonOfConsultation = new ReasonOfConsultation();
+        PatientId = 0;
     }
 
-    public MedicalRecord(ReasonOfConsultation reasonOfConsultation)
+    public MedicalRecord(int patientId): this()
     {
-        //this.ReasonOfConsultation = reasonOfConsultation;
-        ReasonOfConsultationId = reasonOfConsultation.Id;
+        PatientId = patientId;
+    }
+    public MedicalRecord(Patient patient)
+    {
+        Patient = patient;
     }
     
     public ICollection<MedicalExam> MedicalExams { get; private set; }
+    public ICollection<MedicalExam> ReasonOfConsultations { get; private set; }
+    public ICollection<MedicalExam> Treatments { get; private set; }
 }
