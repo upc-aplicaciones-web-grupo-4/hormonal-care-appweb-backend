@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Model.ValuesObjects;
 
-public record PatientEmail(string email)
+public record PatientEmail(string patientEmail)
 {
     public PatientEmail() : this(string.Empty)
     {

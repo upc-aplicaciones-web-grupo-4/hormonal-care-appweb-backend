@@ -15,11 +15,24 @@ public class TreatmentController (ITreatmentCommandService treatmentCommandServi
     [HttpPost]
     public async Task<IActionResult> CreateTreatment(CreateTreatmentResource resource)
     {
+        if (resource == null || resource.MedicalRecordIdentifier <= 0)
+        {
+            return BadRequest("Invalid data.");
+        }
         var createTreatmentCommand = CreateTreatmentCommandFromResourceAssembler.ToCommandFromResource(resource);
         var treatment = await treatmentCommandService.Handle(createTreatmentCommand);
         if (treatment is null) return BadRequest();
         var treatmentResource = TreatmentResourceFromEntityAssembler.ToResourceFromEntity(treatment);
         return CreatedAtAction(nameof(GetTreatmentById), new {treatmentId = treatmentResource.Id}, treatmentResource);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllTreatments()
+    {
+        var getAllTreatmentsQuery = new GetAllTreatmentsQuery();
+        var treatments = await treatmentQueryService.Handle(getAllTreatmentsQuery);
+        var treatmentsResource = treatments.Select(TreatmentResourceFromEntityAssembler.ToResourceFromEntity);
+        return Ok(treatmentsResource);
     }
     
     [HttpGet("{treatmentId:int}")]
@@ -35,6 +48,10 @@ public class TreatmentController (ITreatmentCommandService treatmentCommandServi
     [HttpPut("{treatmentId:int}")]
     public async Task<IActionResult> UpdateTreatment(int treatmentId, UpdateTreatmentResource resource)
     {
+        if (resource == null || resource.MedicalRecordIdentifier <= 0)
+        {
+            return BadRequest("Invalid data.");
+        }
         var updateTreatmentCommand = UpdateTreatmentCommandFromResourceAssembler.ToCommandFromResource(treatmentId, resource);
         var updatedTreatment = await treatmentCommandService.Handle(updateTreatmentCommand);
         if (updatedTreatment == null) return BadRequest();

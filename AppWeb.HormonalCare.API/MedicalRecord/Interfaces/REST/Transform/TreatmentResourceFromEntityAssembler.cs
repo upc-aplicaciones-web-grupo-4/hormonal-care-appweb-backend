@@ -7,6 +7,10 @@ public class TreatmentResourceFromEntityAssembler
 {
     public static TreatmentResource ToResourceFromEntity(Treatment entity)
     {
-        return new TreatmentResource(entity.Id, entity.Description);
+        return new TreatmentResource(
+            entity.Id, 
+            entity.Description,
+            MedicalRecordResourceFromEntityAssembler.ToResourceFromEntity(entity.MedicalRecord)
+            );
     }
 }

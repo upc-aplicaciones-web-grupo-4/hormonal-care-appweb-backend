@@ -7,13 +7,13 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServic
 
 public class TreatmentQueryService (ITreatmentRepository treatementRepository) : ITreatmentQueryService
 {
+    public async Task<IEnumerable<Treatment>> Handle(GetAllTreatmentsQuery query)
+    {
+        return await treatementRepository.ListAsync();
+    }
+
     public async Task<Treatment?> Handle(GetTreatmentByIdQuery query)
     {
-        //Caution with this 
-        //Caution with this 
-        //Caution with this 
-        //Caution with this 
-
         return await treatementRepository.FindByIdAsync(query.Id);
     }
 }

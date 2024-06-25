@@ -7,11 +7,21 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
 
-public class TreatmentCommandService(ITreatmentRepository treatmentRepository, IUnitOfWork unitOfWork): ITreatmentCommandService
+public class TreatmentCommandService(
+    ITreatmentRepository treatmentRepository, 
+    IMedicalRecordRepository medicalRecordRepository,
+    IUnitOfWork unitOfWork
+    ): ITreatmentCommandService
 {
     public async Task<Treatment?> Handle(CreateTreatmentCommand command)
     {
-        var treatment = new Treatment(command);
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        
+        var treatment = new Treatment(command, medicalRecord);
         try
         {
             await treatmentRepository.AddAsync(treatment);
@@ -27,16 +37,22 @@ public class TreatmentCommandService(ITreatmentRepository treatmentRepository, I
     
     public async Task<Treatment?> Handle(UpdateTreatmentCommand command)
     {
+        
+        var medicalRecord = await medicalRecordRepository.FindByIdAsync(command.MedicalRecordId);
+        if (medicalRecord == null)
+        {
+            throw new Exception("MedicalRecord not found");
+        }
+        
         var treatment = await treatmentRepository.FindByIdAsync(command.Id);
         if (treatment == null)
         {
             throw new ArgumentException($"Treatment with id {command.Id} does not exist");
         }
         
+        treatment.Update(command, medicalRecord);
         try
         {
-            treatment.UpdateInformation(command.Description);
-            treatmentRepository.Update(treatment);
             await unitOfWork.CompleteAsync();
             return treatment;
         }

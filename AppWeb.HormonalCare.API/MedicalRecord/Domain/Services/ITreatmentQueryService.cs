@@ -5,5 +5,6 @@ namespace AppWeb.HormonalCare.API.MedicalRecord.Domain.Services;
 
 public interface ITreatmentQueryService
 {
+    Task<IEnumerable<Treatment>> Handle(GetAllTreatmentsQuery query);
     Task<Treatment?> Handle(GetTreatmentByIdQuery query);
 }
