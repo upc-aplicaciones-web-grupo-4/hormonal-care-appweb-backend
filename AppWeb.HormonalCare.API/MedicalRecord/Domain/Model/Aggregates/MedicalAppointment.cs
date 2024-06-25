@@ -16,7 +16,14 @@ public partial class MedicalAppointment
         patientEmail = new PatientEmail();
     }
     
-    public MedicalAppointment(DateTime eventDate, string startTime, string endTime, string tittle, string description, string doctorEmail, string patientEmail)
+    public MedicalAppointment(
+        DateTime eventDate, 
+        string startTime, 
+        string endTime, 
+        string tittle, 
+        string description, 
+        string doctorEmail, 
+        string patientEmail)
     {
         this.eventDate = new EventDate(eventDate);
         this.startTime = new StartTime(startTime);

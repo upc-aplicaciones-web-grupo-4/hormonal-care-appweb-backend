@@ -24,4 +24,5 @@ public partial class MedicalRecord
     }
     
     public ICollection<MedicalExam> MedicalExams { get; private set; }
+    public ICollection<Treatment> Treatments { get; private set; }
 }

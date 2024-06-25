@@ -15,7 +15,7 @@ public class MedicalAppointmentResourceFromEntityAssembler
             entity.tittle,
             entity.description,
             entity.doctorEmail.doctorEmail,
-            entity.patientEmail.email
+            entity.patientEmail.patientEmail
         );
     }
 }
