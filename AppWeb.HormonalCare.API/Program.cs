@@ -163,6 +163,7 @@ builder.Services.AddScoped<IMedicalRecordCommandService, MedicalRecordCommandSer
 builder.Services.AddScoped<IMedicalRecordQueryService, MedicalRecordQueryService>();
 
 
+
 // Medication Bounded Context Injection Configuration
 builder.Services.AddScoped<IMedicationRepository, MedicationRepository>();
 builder.Services.AddScoped<IMedicationCommandService, MedicationCommandService>();

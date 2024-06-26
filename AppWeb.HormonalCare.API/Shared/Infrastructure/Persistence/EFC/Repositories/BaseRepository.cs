@@ -2,7 +2,7 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Microsoft.EntityFrameworkCore;
 
-namespace AppWeb.HormonalCare.API.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+namespace AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 
 public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {

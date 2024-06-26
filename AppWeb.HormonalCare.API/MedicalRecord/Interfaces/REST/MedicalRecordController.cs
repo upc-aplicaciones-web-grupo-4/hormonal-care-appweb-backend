@@ -30,6 +30,7 @@ public class MedicalRecordController (IMedicalRecordCommandService medicalRecord
         if (medicalRecord == null) return NotFound();
         var medicalRecordResource = MedicalRecordResourceFromEntityAssembler.ToResourceFromEntity(medicalRecord);
         return Ok(medicalRecordResource);
+
     }
 
 }

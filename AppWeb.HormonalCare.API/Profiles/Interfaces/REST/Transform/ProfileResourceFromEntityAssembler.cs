@@ -15,5 +15,7 @@ public static class ProfileResourceFromEntityAssembler
             entity.BirthDateValue, 
             entity.PhoneNumber,
             entity.EmailAddress
-        );}
+        );
+        
+    }
 }

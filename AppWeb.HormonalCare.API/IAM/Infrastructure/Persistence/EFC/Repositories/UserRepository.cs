@@ -1,4 +1,4 @@
-using AppWeb.HormonalCare.API.API.Shared.Infrastructure.Persistence.EFC.Repositories;
+using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Repositories;
 using AppWeb.HormonalCare.API.IAM.Domain.Model.Aggregates;
 using AppWeb.HormonalCare.API.IAM.Domain.Repositories;
 using AppWeb.HormonalCare.API.Shared.Infrastructure.Persistence.EFC.Configuration;

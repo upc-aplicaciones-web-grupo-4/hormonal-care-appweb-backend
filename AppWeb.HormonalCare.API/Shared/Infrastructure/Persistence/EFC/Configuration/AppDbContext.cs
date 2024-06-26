@@ -134,6 +134,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasForeignKey(t => t.TypeExamId)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        
         // MedicalRecord Relationships
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
             .HasMany(m => m.MedicalExams)
@@ -142,12 +144,15 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
         
+        
+        
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
             .HasMany(m => m.ReasonOfConsultations)
             .WithOne(t => t.MedicalRecord)
             .HasForeignKey(t => t.MedicalRecordId)
             .HasPrincipalKey(t => t.Id)
             .OnDelete(DeleteBehavior.Cascade);
+        
         
         builder.Entity<MedicalRecord.Domain.Model.Aggregates.MedicalRecord>()
             .HasMany(m => m.Treatments)

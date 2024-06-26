@@ -28,6 +28,6 @@ public partial class MedicalRecord
     }
     
     public ICollection<MedicalExam> MedicalExams { get; private set; }
-    public ICollection<MedicalExam> ReasonOfConsultations { get; private set; }
-    public ICollection<MedicalExam> Treatments { get; private set; }
+    public ICollection<ReasonOfConsultation> ReasonOfConsultations { get; private set; }
+    public ICollection<Treatment> Treatments { get; private set; }
 }

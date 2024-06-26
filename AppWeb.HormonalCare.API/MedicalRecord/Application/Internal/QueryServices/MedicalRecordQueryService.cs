@@ -6,10 +6,10 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.QueryServices;
 
-public class MedicalRecordQueryService (IMedicalRecordRepository medicalRecordRepository, IUnitOfWork unitOfWork): IMedicalRecordQueryService
+public class MedicalRecordQueryService (IMedicalRecordRepository medicalRecordRepository): IMedicalRecordQueryService
 {
     public async Task<Domain.Model.Aggregates.MedicalRecord?> Handle(GetMedicalRecordByIdQuery query)
     {
-        return await medicalRecordRepository.FindByIdAsync(query.Id);
+        return await medicalRecordRepository.FindByIdAsync(query.MedicalRecordId);
     }
 }

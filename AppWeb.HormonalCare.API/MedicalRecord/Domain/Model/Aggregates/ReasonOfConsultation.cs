@@ -9,10 +9,6 @@ public partial class ReasonOfConsultation
     public string Symptoms { get; private set; }
     
     
-    public MedicalRecord MedicalRecord { get; private set; }
-    
-    public int MedicalRecordId { get; private set; }
-
  
     
     public ReasonOfConsultation()
@@ -42,5 +38,8 @@ public partial class ReasonOfConsultation
         Symptoms = symptoms;
         return this;
     }
+    public MedicalRecord MedicalRecord { get; private set; }
+    
+    public int MedicalRecordId { get; private set; }
 
 }   

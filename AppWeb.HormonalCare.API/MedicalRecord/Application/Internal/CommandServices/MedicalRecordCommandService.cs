@@ -7,7 +7,7 @@ using AppWeb.HormonalCare.API.Shared.Domain.Repositories;
 
 namespace AppWeb.HormonalCare.API.MedicalRecord.Application.Internal.CommandServices;
 
-public class MedicalRecordCommandService (IMedicalRecordRepository medicalRecordRepository, PatientRepository patientRepository,  IUnitOfWork unitOfWork): IMedicalRecordCommandService
+public class MedicalRecordCommandService (IMedicalRecordRepository medicalRecordRepository, IPatientRepository patientRepository,  IUnitOfWork unitOfWork): IMedicalRecordCommandService
 {
     public async Task<Domain.Model.Aggregates.MedicalRecord?> Handle(CreateMedicalRecordCommand command)
     {

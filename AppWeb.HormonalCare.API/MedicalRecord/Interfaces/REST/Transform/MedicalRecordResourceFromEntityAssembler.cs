@@ -6,6 +6,9 @@ public static class MedicalRecordResourceFromEntityAssembler
 {
     public static MedicalRecordResource ToResourceFromEntity(Domain.Model.Aggregates.MedicalRecord entity)
     {
-        return new MedicalRecordResource(entity.Id, PatientResourceFromEntityAssembler .ToResourceFromEntity(entity.Patient));
+        return new MedicalRecordResource(
+            entity.Id,
+            PatientResourceFromEntityAssembler.ToResourceFromEntity(entity.Patient)
+        );
     }
 }
